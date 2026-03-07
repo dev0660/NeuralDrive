@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Call Records</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-blue-600 text-white p-6 shadow">
+        <div class="container mx-auto">
+            <h1 class="text-2xl font-bold">📊 Admin Dashboard - Call Records</h1>
+            <p class="text-sm">Tracking performance of all salespeople</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <!-- Filter by User -->
+        <form method="get" class="mb-6">
+            <label for="user" class="block text-sm font-medium text-gray-700 mb-1">Filter by User:</label>
+            <div class="flex items-center space-x-2">
+                <select name="user" id="user" class="p-2 border border-gray-300 rounded-md shadow-sm">
+                    <option value="">All Users</option>
+                    {% for u in users %}
+                        <option value="{{ u.id }}" {% if selected_user_id == u.id|stringformat:"s" %}selected{% endif %}>
+                            {{ u.username }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Filter
+                </button>
+            </div>
+        </form>
+
+        <!-- Call Records Table -->
+        <div class="overflow-x-auto bg-white rounded-lg shadow p-4">
+            <table class="table-auto w-full text-sm text-left">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="px-4 py-2">User</th>
+                        <th class="px-4 py-2">Assistant</th>
+                        <th class="px-4 py-2">Call Time</th>
+                        <th class="px-4 py-2">Duration (s)</th>
+                        <th class="px-4 py-2">Success Evaluation</th>
+                        <th class="px-4 py-2">Recording</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for call in call_data %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-2 font-medium">{{ call.user.username }}</td>
+                        <td class="px-4 py-2">{{ call.assistant_name }}</td>
+                        <td class="px-4 py-2">{{ call.timestamp|date:"M d, Y H:i" }}</td>
+                        <td class="px-4 py-2">{{ call.duration|default:"-" }}</td>
+                        <td class="px-4 py-2 max-w-xs truncate" title="{{ call.success_evaluation }}">
+                            {{ call.success_evaluation|truncatewords:12 }}
+                        </td>
+                        <td class="px-4 py-2">
+                            {% if call.recording_url %}
+                                <a href="{{ call.recording_url }}" target="_blank" class="text-blue-500 underline">Listen</a>
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-gray-500 py-4">No call records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Details - Sofia Delgado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+
+<body
+  class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen font-sans transition-colors duration-300">
+  <!-- Header -->
+  <header class="bg-blue-500 text-white py-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center px-6">
+      <h1 class="text-2xl font-bold">Customer Details</h1>
+      <div class="flex items-center space-x-4">
+        <a href="/outbound_calls/" class="text-white hover:underline text-sm">← Back to Outbound Calls</a>
+        <button onclick="document.documentElement.classList.toggle('dark')"
+          class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition">Toggle Dark
+          Mode</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content Section -->
+  <main class="flex-grow container mx-auto py-12">
+    <!-- Customer Info Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Contact Details -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+        <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📇 Contact Details</h2>
+        <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+          <li><strong>Phone:</strong> (303) 555‑2847</li>
+          <li><strong>Email:</strong> s.delgado.green@gmail.com</li>
+          <li><strong>Preferred Contact:</strong> Afternoon texts or scheduled video calls (1–4 p.m. MST); detailed PDFs
+            via email</li>
+          <li><strong>Address:</strong> 924 Juniper Street, Denver, CO 80211</li>
+        </ul>
+      </div>
+
+      <!-- Vehicle Info -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+        <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🚗 Vehicle Info</h2>
+        <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+          <li><strong>Current Car:</strong> 2012 Toyota Prius Three (Sea Glass Pearl) – 168K miles</li>
+          <li><strong>Charging Situation:</strong> Detached garage with 240‑V outlet ready for Level‑2 install</li>
+          <li><strong>Trade‑In:</strong> Minimal value, plans to donate to a nonprofit EV‑conversion program</li>
+          <li><strong>Financing Preference:</strong> 36‑month loan ≤ 4% APR or manufacturer 0% EV financing; willing to
+            roll Level‑2 charger & solar‑panel tie‑in into loan</li>
+        </ul>
+        <p class="mt-4"><strong>Must‑Have Green Perks:</strong></p>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 ml-4">
+          <li>Official documentation of battery sourcing (no conflict minerals) and end‑of‑life recycling program</li>
+          <li>Breakdown of full lifecycle CO₂ emissions versus current Prius</li>
+          <li>Guidance on stacking federal $7,500 credit, Colorado $5,000 credit, utility rebate, and HOV lane permit
+          </li>
+          <li>Home‑charger bundle with install, plus option to integrate future rooftop solar</li>
+        </ul>
+        <p class="mt-4"><strong>Extended Warranty:</strong> Only if it includes battery health guarantees to 150K miles
+          and covers eco‑friendly loaner availability during service</p>
+      </div>
+    </div>
+
+    <!-- Call Analysis -->
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-12">
+      <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">🧠 Call Analysis</h2>
+      {% if summary %}
+      <pre
+        class="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm text-gray-700 dark:text-gray-300 overflow-x-auto">{{ summary|safe }}</pre>
+      {% else %}
+      <p class="text-gray-600 dark:text-gray-400">No analysis data available.</p>
+      {% endif %}
+    </div>
+
+    <!-- Success Evaluation -->
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-8">
+      <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">✅ Success Evaluation</h2>
+      {% if success_evaluation %}
+      <pre
+        class="whitespace-pre-wrap bg-gray-100 dark:bg-gray-700 border-l-4 border-gray-400 text-gray-800 dark:text-gray-300 p-4 rounded font-mono text-sm">{{ success_evaluation }}</pre>
+      {% else %}
+      <p class="text-gray-600 dark:text-gray-400">No evaluation available.</p>
+      {% endif %}
+    </div>
+
+    <!-- Transcript -->
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-8">
+      <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">📝 Transcript</h2>
+      {% if transcript %}
+      <div
+        class="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm text-gray-700 dark:text-gray-300 font-mono space-y-4">
+        {% for line in transcript.splitlines %}
+        {% if line %}<p class="mb-2">{{ line }}</p>{% endif %}
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-gray-600 dark:text-gray-400">No transcript available.</p>
+      {% endif %}
+    </div>
+
+    <!-- Recording -->
+    {% if recording_url %}
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-8">
+      <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">🔊 Call Recording</h2>
+      <audio controls class="w-full">
+        <source src="{{ recording_url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+    {% endif %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-200 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-center py-4 text-sm">
+    &copy; 2025 Fred Davis CRM
+  </footer>
+</body>
+
+</html>

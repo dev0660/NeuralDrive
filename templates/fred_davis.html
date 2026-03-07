@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Details - Fred Davis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+      darkMode: 'class',
+    };
+  </script>
+</head>
+
+<body
+  class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen font-sans transition-colors duration-300">
+
+  <!-- Header -->
+  <header class="bg-blue-600 text-white py-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center px-6">
+      <h1 class="text-3xl font-bold tracking-wide">Customer Details</h1>
+      <div class="flex items-center space-x-4">
+        <a href="/outbound_calls/" class="text-white hover:underline text-sm">← Back to Outbound Calls</a>
+        <a href="{% url 'call_history_fred_davis' assistant_name='Fred Davis' %}"
+          class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition shadow">
+          📜 Call History
+        </a>
+        <button onclick="document.documentElement.classList.toggle('dark')"
+          class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition">
+          Toggle Dark Mode
+        </button>
+      </div>
+    </div>
+  </header>
+
+  {% if sections|length == 0 and total_score == "N/A" %}
+  <!-- 🧠 Loading Screen While GPT Analysis Runs -->
+  <main class="flex-grow container mx-auto py-32 flex flex-col items-center justify-center text-center space-y-8">
+    <h2 class="text-3xl font-semibold text-blue-600 dark:text-blue-400">🧠 Analyzing Your Call...</h2>
+    <p class="text-gray-600 dark:text-gray-300 max-w-lg">
+      We’re evaluating the call using GPT. This usually takes <strong>20–30 seconds</strong>.
+    </p>
+
+    <!-- Progress Bar -->
+    <div class="w-2/3 bg-gray-300 rounded-full h-5 overflow-hidden shadow-inner">
+      <div id="progress-bar" class="bg-blue-600 h-5 w-0 transition-all duration-700"></div>
+    </div>
+
+    <p class="text-gray-500 dark:text-gray-400 text-sm">The page will refresh automatically once analysis is complete.</p>
+
+    <script>
+      // 🌀 Animate progress bar
+      let progress = 0;
+      const bar = document.getElementById("progress-bar");
+      const interval = setInterval(() => {
+        if (progress < 95) {
+          progress += Math.random() * 10;
+          bar.style.width = progress + "%";
+        }
+      }, 800);
+
+      // 🔄 Auto-refresh every 8 seconds
+      setTimeout(() => window.location.reload(), 8000);
+    </script>
+  </main>
+
+  {% else %}
+  <!-- ✅ Full Page Content When Analysis is Ready -->
+  <main class="flex-grow container mx-auto py-12">
+    <!-- Customer Info Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Contact Details -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+        <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📇 Contact Details</h2>
+        <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+          <li><strong>Name:</strong> Fred Davis</li>
+          <li><strong>Phone:</strong> (731) 418-8001</li>
+          <li><strong>Email:</strong> fokoye.tx@gmail.com</li>
+          <li><strong>Preferred Contact:</strong> Text or phone call (afternoons preferred)</li>
+          <li><strong>Address:</strong> 1427 Magnolia Bend Drive, Katy, TX 77494</li>
+        </ul>
+      </div>
+
+      <!-- Vehicle Info -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+        <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🚗 Vehicle Info</h2>
+        <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+          <li><strong>Vehicle:</strong> 2020 Toyota RAV4 XLE (Magnetic Gray)</li>
+          <li><strong>Mileage:</strong> 46,280 miles</li>
+          <li><strong>VIN:</strong> 2T3R1RFV0LC072541</li>
+          <li><strong>Last Serviced:</strong> 11/04/2024</li>
+          <li><strong>Monthly Payment:</strong> $489/month</li>
+          <li><strong>Remaining Payments:</strong> 18 payments (6-year loan)</li>
+          <li><strong>Payoff Amount:</strong> $9,450</li>
+          <li><strong>Estimated Trade Value:</strong> $19,800</li>
+          <li><strong>Equity:</strong> ~$10,350</li>
+          <li><strong>Financed Through:</strong> Toyota Financial</li>
+          <li><strong>Additional Coverage:</strong> GAP + Platinum VSA warranty</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ✅ Success Evaluation -->
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
+      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">✅ Success Evaluation</h2>
+
+      {% for section in sections %}
+      <details class="mb-4 bg-blue-100 dark:bg-blue-900 p-4 rounded-lg">
+        <summary class="cursor-pointer text-lg font-semibold text-blue-800 dark:text-blue-300">
+          {{ section.label }}
+        </summary>
+        <div class="mt-3 space-y-2 text-gray-800 dark:text-gray-200">
+          <p><strong>Score:</strong> {{ section.data.score }}</p>
+          <p><strong>Reason:</strong> {{ section.data.reason }}</p>
+          <p><strong>Suggestion:</strong> {{ section.data.suggestion }}</p>
+        </div>
+      </details>
+      {% endfor %}
+
+      <div class="mt-6 bg-green-100 dark:bg-green-900 p-4 rounded-lg">
+        <h3 class="text-lg font-semibold text-green-800 dark:text-green-300">✅ Final Comments & Total Score</h3>
+        <p><strong>Total Score:</strong> {{ total_score }}/100</p>
+        <p>{{ final_comments }}</p>
+      </div>
+    </div>
+
+    <!-- 📜 Transcript -->
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
+      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📜 Call Transcript</h2>
+
+      {% if formatted_transcript %}
+      <div class="space-y-6">
+        {% for entry in formatted_transcript %}
+        <div class="flex {% if entry.speaker|lower|cut:' ' == 'ai' %}justify-start{% else %}justify-end{% endif %}">
+          <div class="max-w-[75%] px-5 py-3 rounded-2xl shadow-sm 
+                      {% if entry.speaker|lower|cut:' ' == 'ai' %}
+                          bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-tl-none
+                      {% else %}
+                          bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 rounded-tr-none
+                      {% endif %}">
+            <p class="text-xs font-semibold opacity-70 mb-1">
+              {{ entry.speaker }}
+            </p>
+            <p class="text-sm leading-relaxed whitespace-pre-line">
+              {{ entry.message }}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-gray-600 dark:text-gray-400">No transcript available.</p>
+      {% endif %}
+    </div>
+
+    <!-- 🔊 Call Recording -->
+    {% if recording_url %}
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
+      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🔊 Call Recording</h2>
+      <audio controls class="w-full">
+        <source src="{{ recording_url }}" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+    {% endif %}
+  </main>
+  {% endif %}
+
+  <!-- Footer -->
+  <footer class="bg-gray-200 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-center py-4 text-sm">
+    &copy; 2025 Fred Davis CRM
+  </footer>
+
+</body>
+
+</html>

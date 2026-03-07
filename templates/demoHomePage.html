@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Automated AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+
+    <style>
+        .nav-link {
+            position: relative;
+            transition: color 0.25s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 100%;
+            height: 2px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            color: #dbeafe;
+        }
+
+        .nav-link:hover::after,
+        .nav-link:focus::after {
+            transform: scaleX(1);
+        }
+
+        .btn-bubble {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .btn-bubble:hover,
+        .btn-bubble:focus {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+        }
+
+        .footer-link {
+            position: relative;
+            color: #d1d5db;
+            transition: color 0.2s ease;
+            padding-bottom: 2px;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 1px;
+            width: 100%;
+            background-color: currentColor;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.2s ease;
+        }
+
+        .footer-link:hover,
+        .footer-link:focus {
+            color: #ffffff;
+        }
+
+        .footer-link:hover::after,
+        .footer-link:focus::after {
+            transform: scaleX(1);
+        }
+
+        .footer-link:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen relative">
+
+    <!-- Header -->
+    <header class="bg-blue-500 text-white py-6">
+        <div class="max-w-7xl mx-auto flex items-center px-6">
+            <h1 class="text-2xl font-bold">Jarvis AI</h1>
+            <nav class="ml-auto flex space-x-6">
+                <a href="/feature" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Features</a>
+                <a href="/faq" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">FAQ</a>
+                <a href="/pricing" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Pricing</a>
+                <a href="/testimonials" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Testimonials</a>
+            </nav>
+            <a href="/signin"
+                class="btn-bubble ml-6 bg-white text-blue-500 px-4 py-2 rounded shadow font-bold hover:bg-gray-100">
+                Sign In
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <main class="relative flex-grow flex items-center justify-center bg-white overflow-hidden">
+        <!-- Particle canvas -->
+        <canvas id="hero-particles" class="absolute inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
+
+        <!-- Content wrapper with z-index to ensure visibility -->
+        <div class="relative z-10 text-center px-4">
+            <h2 class="text-4xl font-bold mb-4 text-gray-900">Automated AI for Your Dealerships</h2>
+            <p class="text-lg text-gray-700 mb-6">
+                Reps master objections on AI calls—so you never risk a real lead again.
+            </p>
+            <a href="/signup"
+                class="btn-bubble inline-block bg-blue-500 text-white px-8 py-3 rounded hover:bg-blue-600 transition-transform">
+                Start Now
+            </a>
+        </div>
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-auto">
+        <div class="max-w-7xl mx-auto text-center px-4">
+            <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
+            <nav class="flex justify-center space-x-6 mt-4 text-sm">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Particle config scoped to hero canvas -->
+    <script>
+        window.addEventListener("load", async () => {
+            await tsParticles.load("hero-particles", {
+                fullScreen: { enable: false },
+                background: {
+                    color: { value: "#ffffff" }
+                },
+                fpsLimit: 60,
+                interactivity: {
+                    events: {
+                        onHover: { enable: true, mode: "repulse" },
+                        onClick: { enable: true, mode: "push" },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: { distance: 100, duration: 0.4 },
+                        push: { quantity: 4 }
+                    }
+                },
+                particles: {
+                    color: { value: "#60a5fa" },
+                    links: {
+                        enable: true,
+                        color: "#60a5fa",
+                        distance: 120,
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        outModes: { default: "bounce" }
+                    },
+                    number: {
+                        value: 40,
+                        density: { enable: true, area: 800 }
+                    },
+                    opacity: { value: 0.6 },
+                    shape: { type: "circle" },
+                    size: { value: { min: 1, max: 4 } }
+                },
+                detectRetina: true
+            });
+        });
+    </script>
+</body>
+
+</html>

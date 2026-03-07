@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Created - Jarvis AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+
+  <style>
+    .nav-link {
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+      color: #1d4ed8;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus::after {
+      transform: scaleX(1);
+    }
+
+    .footer-link {
+      position: relative;
+      color: #d1d5db;
+      transition: color 0.2s ease;
+      padding-bottom: 2px;
+    }
+
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      width: 100%;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+
+    .footer-link:hover,
+    .footer-link:focus {
+      color: #ffffff;
+    }
+
+    .footer-link:hover::after,
+    .footer-link:focus::after {
+      transform: scaleX(1);
+    }
+
+    .footer-link:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+      border-radius: 2px;
+    }
+
+    .btn-bubble {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-bubble:hover,
+    .btn-bubble:focus {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col relative">
+
+  <!-- Header -->
+  <header class="bg-blue-500 text-white py-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6">
+      <h1 class="text-2xl font-bold">Jarvis AI</h1>
+      <a href="{% url 'home' %}"
+        class="btn-bubble bg-white text-blue-500 px-4 py-2 rounded shadow font-bold hover:bg-gray-100 transition">
+        Log Out
+      </a>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto flex justify-center space-x-6 py-4">
+      <a href="/customer_discovery/" class="nav-link text-blue-500 font-semibold hover:text-blue-700">Customer
+        Discovery</a>
+      <a href="/outbound_calls/" class="nav-link text-blue-500 font-semibold hover:text-blue-700">Outbound Calls</a>
+      <a href="/inbound_calls/" class="nav-link text-blue-500 font-semibold hover:text-blue-700">Inbound Calls</a>
+    </div>
+  </nav>
+
+  <!-- Hero Area -->
+  <main class="relative flex-grow flex items-center justify-center bg-white overflow-hidden">
+    <canvas id="hero-particles" class="absolute inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
+
+    <div class="relative z-10 text-center px-4">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome {{ user.username }}!</h2>
+      <p class="text-lg text-gray-600 mb-6">Choose an option above to begin.</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 mt-auto">
+    <div class="max-w-7xl mx-auto text-center px-4">
+      <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
+      <nav class="flex justify-center space-x-6 mt-4 text-sm">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Contact Us</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Particle Canvas Config -->
+  <script>
+    window.addEventListener("load", async () => {
+      await tsParticles.load("hero-particles", {
+        fullScreen: { enable: false },
+        background: { color: { value: "#ffffff" } },
+        fpsLimit: 60,
+        interactivity: {
+          events: {
+            onHover: { enable: true, mode: "repulse" },
+            onClick: { enable: true, mode: "push" },
+            resize: true
+          },
+          modes: {
+            repulse: { distance: 100, duration: 0.4 },
+            push: { quantity: 4 }
+          }
+        },
+        particles: {
+          color: { value: "#60a5fa" },
+          links: {
+            enable: true,
+            color: "#60a5fa",
+            distance: 120,
+            opacity: 0.4,
+            width: 1
+          },
+          move: {
+            enable: true,
+            speed: 1,
+            outModes: { default: "bounce" }
+          },
+          number: {
+            value: 40,
+            density: { enable: true, area: 800 }
+          },
+          opacity: { value: 0.6 },
+          shape: { type: "circle" },
+          size: { value: { min: 1, max: 4 } }
+        },
+        detectRetina: true
+      });
+    });
+  </script>
+</body>
+
+</html>

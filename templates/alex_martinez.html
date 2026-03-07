@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details - Alex Martinez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen font-sans transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-blue-500 text-white py-6 shadow-md">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <h1 class="text-2xl font-bold">Customer Details</h1>
+            <div class="flex items-center space-x-4">
+                <a href="/outbound_calls/" class="text-white hover:underline text-sm">← Back to Outbound Calls</a>
+                <button onclick="document.documentElement.classList.toggle('dark')"
+                    class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition">Toggle
+                    Dark Mode</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Section -->
+    <main class="flex-grow container mx-auto py-12">
+        <!-- Customer Info Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Contact Details -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+                <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📇 Contact Details</h2>
+                <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+                    <li><strong>Name:</strong> Alex Martinez</li>
+                    <li><strong>Phone:</strong> (914) 570-3819</li>
+                    <li><strong>Email:</strong> alex.mtx.dev@gmail.com</li>
+                    <li><strong>Preferred Contact:</strong> Email/Text first, calls if scheduled</li>
+                    <li><strong>Address:</strong> 702 Willow Creek Drive, Austin, TX 78741</li>
+                </ul>
+            </div>
+
+            <!-- Vehicle Info -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+                <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🚗 Vehicle Info</h2>
+                <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+                    <li><strong>Vehicle:</strong> 2017 Honda Accord EX-L (White)</li>
+                    <li><strong>Mileage:</strong> 95,300 miles</li>
+                    <li><strong>VIN:</strong> 1HGCR2F88HA027631</li>
+                    <li><strong>Monthly Payment:</strong> Car is paid off</li>
+                    <li><strong>Remaining Payments:</strong> 0</li>
+                    <li><strong>Payoff Amount:</strong> $0</li>
+                    <li><strong>Estimated Trade Value:</strong> $15,500</li>
+                    <li><strong>Equity:</strong> ~$15,500</li>
+                    <li><strong>Additional Coverage:</strong> No outstanding loan or warranty</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Call Analysis -->
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
+            <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🧠 Call Analysis</h2>
+
+            {% if summary_sections %}
+            <div class="text-sm text-gray-700 dark:text-gray-300 space-y-4">
+                <p>{{ summary_intro|linebreaksbr }}</p>
+
+                {% for section in summary_sections %}
+                <details class="bg-gray-100 dark:bg-gray-700 rounded p-4">
+                    <summary class="cursor-pointer font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                        {{ section.heading }}
+                    </summary>
+                    <div class="mt-2 space-y-1">
+                        {% for line in section.content %}
+                        <p>{{ line }}</p>
+                        {% endfor %}
+                    </div>
+                </details>
+                {% endfor %}
+            </div>
+            {% elif summary %}
+            <pre
+                class="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm text-gray-700 dark:text-gray-300 overflow-x-auto whitespace-pre-wrap">{{ summary|safe }}</pre>
+            {% else %}
+            <p class="text-gray-600 dark:text-gray-400">No analysis data available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Success Evaluation -->
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-8">
+            <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">✅ Success Evaluation</h2>
+
+            {% if success_evaluation_sections %}
+            <div class="text-sm text-gray-700 dark:text-gray-300 space-y-4">
+
+                {% for section in success_evaluation_sections %}
+                <details class="bg-gray-100 dark:bg-gray-700 rounded p-4">
+                    <summary class="cursor-pointer font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                        {{ section.heading }}
+                    </summary>
+                    <div class="mt-2 space-y-1">
+                        {% for line in section.content %}
+                        <p>{{ line }}</p>
+                        {% endfor %}
+                    </div>
+                </details>
+                {% endfor %}
+
+                {% if success_evaluation_summary %}
+                <details class="bg-gray-100 dark:bg-gray-700 rounded p-4">
+                    <summary class="cursor-pointer font-semibold text-green-600 dark:text-green-400 hover:underline">
+                        {{ success_evaluation_summary.heading }}
+                    </summary>
+                    <div class="mt-2 space-y-1">
+                        {% for line in success_evaluation_summary.content %}
+                        <p>{{ line }}</p>
+                        {% endfor %}
+                    </div>
+                </details>
+                {% endif %}
+            </div>
+            {% elif success_evaluation %}
+            <pre
+                class="whitespace-pre-wrap bg-gray-100 dark:bg-gray-700 border-l-4 border-green-400 text-gray-800 dark:text-gray-300 p-4 rounded font-mono text-sm">
+                    {{ success_evaluation }}
+                </pre>
+            {% else %}
+            <p class="text-gray-600 dark:text-gray-400">No evaluation available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Transcript -->
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-8">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">📝 Transcript</h2>
+            {% if transcript %}
+            <div
+                class="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm text-gray-700 dark:text-gray-300 font-mono space-y-4">
+                {% for line in transcript.splitlines %}
+                {% if line %}<p class="mb-2">{{ line }}</p>{% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-600 dark:text-gray-400">No transcript available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Recording -->
+        {% if recording_url %}
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-8">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">🔊 Call Recording</h2>
+            <audio controls class="w-full">
+                <source src="{{ recording_url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-center py-4 text-sm">
+        &copy; 2025 Alex Martinez CRM
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Automated AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggles = document.querySelectorAll('.faq-toggle');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function () {
+                    const answer = this.nextElementSibling;
+                    if (answer.style.maxHeight) {
+                        answer.style.maxHeight = null;
+                    } else {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <header class="bg-blue-500 text-white py-6 relative">
+        <div class="container mx-auto flex items-center">
+            <h1 class="text-2xl font-bold">Jarvis AI</h1>
+            <nav class="ml-auto flex space-x-8 pr-24">
+                <a href="/" class="hover:underline">Home</a>
+                <a href="/feature" class="hover:underline">Features</a>
+                <a href="/pricing" class="hover:underline">Pricing</a>
+                <a href="/testimonials" class="hover:underline">Testimonials</a>
+            </nav>
+            <div
+                class="ml-auto bg-white text-blue-500 px-4 py-2 rounded shadow hover:bg-gray-100 absolute top-4 right-4">
+                <a href="/signin" class="font-bold">Sign In</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow bg-white py-10">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <div class="bg-gray-100 p-6 rounded shadow">
+                    <button class="faq-toggle font-bold mb-2">What is Automated AI?</button>
+                    <div class="faq-answer">
+                        <p>Automated AI provides tailored AI solutions to help businesses automate processes and improve
+                            efficiency.</p>
+                    </div>
+                </div>
+                <div class="bg-gray-100 p-6 rounded shadow">
+                    <button class="faq-toggle font-bold mb-2">How secure is Automated AI?</button>
+                    <div class="faq-answer">
+                        <p>We prioritize security with robust encryption and data protection measures to keep your
+                            information safe.</p>
+                    </div>
+                </div>
+                <div class="bg-gray-100 p-6 rounded shadow">
+                    <button class="faq-toggle font-bold mb-2">Can I integrate Automated AI with my existing
+                        systems?</button>
+                    <div class="faq-answer">
+                        <p>Yes, Automated AI offers seamless integration through APIs and support for popular platforms.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-gray-100 p-6 rounded shadow">
+                    <button class="faq-toggle font-bold mb-2">What industries benefit from Automated AI?</button>
+                    <div class="faq-answer">
+                        <p>Our solutions cater to a wide range of industries, including healthcare, finance, e-commerce,
+                            and more.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-auto">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
+            <nav class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="hover:underline">Privacy Policy</a>
+                <a href="#" class="hover:underline">Terms of Service</a>
+                <a href="#" class="hover:underline">Contact Us</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+
+</html>
