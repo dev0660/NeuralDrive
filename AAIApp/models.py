@@ -90,6 +90,13 @@ class CallAnalysis(models.Model):
     respect_suggestion = models.TextField(null=True, blank=True)
 
     final_comments = models.TextField(null=True, blank=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=["user", "assistant_name"]),
+            models.Index(fields=["user", "call_id"]),
+            models.Index(fields=["user", "timestamp"]),
+        ]
 
     def __str__(self):
         return f"CallAnalysis for {self.user.username} ({self.call_id})"

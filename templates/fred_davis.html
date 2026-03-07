@@ -14,6 +14,25 @@
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
           },
+          keyframes: {
+            bob: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            },
+            blink: {
+              '0%, 45%, 100%': { transform: 'scaleY(1)' },
+              '50%': { transform: 'scaleY(0.1)' }
+            },
+            floatBubble: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-4px)' }
+            }
+          },
+          animation: {
+            bob: 'bob 2s ease-in-out infinite',
+            blink: 'blink 3s infinite',
+            floatBubble: 'floatBubble 2.2s ease-in-out infinite'
+          }
         },
       },
       darkMode: 'class',
@@ -24,16 +43,68 @@
 <body
   class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen font-sans transition-colors duration-300">
 
+  <!-- Loading Overlay -->
+  <div id="loading-overlay"
+    class="hidden fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center px-6">
+    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-xl w-full p-8 text-center relative">
+
+      <div class="mb-6">
+        <div
+          class="inline-block relative bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-2xl px-6 py-4 shadow animate-floatBubble">
+          <p id="loading-message" class="text-lg font-semibold">
+            This will take a minute. Evaluating your results now...
+          </p>
+          <div
+            class="absolute left-1/2 -bottom-3 -translate-x-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[14px] border-l-transparent border-r-transparent border-t-blue-100 dark:border-t-blue-900">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center mb-6">
+        <div class="animate-bob">
+          <div class="relative w-36 h-36">
+            <div class="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-24 bg-yellow-200 rounded-full shadow-md">
+              <div class="absolute top-8 left-6 w-3 h-5 bg-gray-800 rounded-full animate-blink"></div>
+              <div class="absolute top-8 right-6 w-3 h-5 bg-gray-800 rounded-full animate-blink"></div>
+              <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-10 h-5 border-b-4 border-gray-800 rounded-b-full"></div>
+            </div>
+
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-16 bg-blue-500 rounded-t-3xl rounded-b-xl shadow-md"></div>
+            <div class="absolute bottom-10 left-4 w-10 h-3 bg-blue-400 rounded-full rotate-[25deg]"></div>
+            <div class="absolute bottom-10 right-4 w-10 h-3 bg-blue-400 rounded-full -rotate-[25deg]"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
+        <div id="loading-progress-bar"
+          class="bg-blue-600 h-4 w-0 transition-all duration-700 ease-out rounded-full"></div>
+      </div>
+
+      <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+        Pulling the latest call, scoring it, and updating your dashboard.
+      </p>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="bg-blue-600 text-white py-6 shadow-md">
     <div class="container mx-auto flex justify-between items-center px-6">
       <h1 class="text-3xl font-bold tracking-wide">Customer Details</h1>
       <div class="flex items-center space-x-4">
         <a href="/outbound_calls/" class="text-white hover:underline text-sm">← Back to Outbound Calls</a>
+
+        <a href="?refresh=1"
+          id="refresh-link"
+          class="bg-yellow-400 text-blue-900 px-3 py-1 rounded hover:bg-yellow-300 text-sm font-medium transition shadow">
+          🔄 Refresh Latest Call
+        </a>
+
         <a href="{% url 'call_history_fred_davis' assistant_name='Fred Davis' %}"
           class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition shadow">
           📜 Call History
         </a>
+
         <button onclick="document.documentElement.classList.toggle('dark')"
           class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition">
           Toggle Dark Mode
@@ -42,43 +113,11 @@
     </div>
   </header>
 
-  {% if sections|length == 0 and total_score == "N/A" %}
-  <!-- 🧠 Loading Screen While GPT Analysis Runs -->
-  <main class="flex-grow container mx-auto py-32 flex flex-col items-center justify-center text-center space-y-8">
-    <h2 class="text-3xl font-semibold text-blue-600 dark:text-blue-400">🧠 Analyzing Your Call...</h2>
-    <p class="text-gray-600 dark:text-gray-300 max-w-lg">
-      We’re evaluating the call using GPT. This usually takes <strong>20–30 seconds</strong>.
-    </p>
-
-    <!-- Progress Bar -->
-    <div class="w-2/3 bg-gray-300 rounded-full h-5 overflow-hidden shadow-inner">
-      <div id="progress-bar" class="bg-blue-600 h-5 w-0 transition-all duration-700"></div>
-    </div>
-
-    <p class="text-gray-500 dark:text-gray-400 text-sm">The page will refresh automatically once analysis is complete.</p>
-
-    <script>
-      // 🌀 Animate progress bar
-      let progress = 0;
-      const bar = document.getElementById("progress-bar");
-      const interval = setInterval(() => {
-        if (progress < 95) {
-          progress += Math.random() * 10;
-          bar.style.width = progress + "%";
-        }
-      }, 800);
-
-      // 🔄 Auto-refresh every 8 seconds
-      setTimeout(() => window.location.reload(), 8000);
-    </script>
-  </main>
-
-  {% else %}
-  <!-- ✅ Full Page Content When Analysis is Ready -->
   <main class="flex-grow container mx-auto py-12">
-    <!-- Customer Info Grid -->
+
+    <!-- Contact + Vehicle Info ALWAYS VISIBLE -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Contact Details -->
+
       <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
         <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📇 Contact Details</h2>
         <ul class="text-gray-700 dark:text-gray-300 space-y-2">
@@ -90,7 +129,6 @@
         </ul>
       </div>
 
-      <!-- Vehicle Info -->
       <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
         <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🚗 Vehicle Info</h2>
         <ul class="text-gray-700 dark:text-gray-300 space-y-2">
@@ -109,31 +147,58 @@
       </div>
     </div>
 
-    <!-- ✅ Success Evaluation -->
+    {% if empty_state_message %}
+    <div class="bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-md mt-12 text-center">
+      <h2 class="text-3xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+        No Call Found Yet
+      </h2>
+
+      <p class="text-gray-600 dark:text-gray-300 text-lg mb-6">
+        {{ empty_state_message }}
+      </p>
+
+      <a href="?refresh=1"
+        id="refresh-link-empty"
+        class="bg-yellow-400 text-blue-900 px-5 py-3 rounded-lg hover:bg-yellow-300 text-sm font-semibold transition shadow inline-block">
+        🔄 Refresh Latest Call
+      </a>
+    </div>
+
+    {% else %}
+
     <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
       <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">✅ Success Evaluation</h2>
 
-      {% for section in sections %}
-      <details class="mb-4 bg-blue-100 dark:bg-blue-900 p-4 rounded-lg">
-        <summary class="cursor-pointer text-lg font-semibold text-blue-800 dark:text-blue-300">
-          {{ section.label }}
-        </summary>
-        <div class="mt-3 space-y-2 text-gray-800 dark:text-gray-200">
-          <p><strong>Score:</strong> {{ section.data.score }}</p>
-          <p><strong>Reason:</strong> {{ section.data.reason }}</p>
-          <p><strong>Suggestion:</strong> {{ section.data.suggestion }}</p>
-        </div>
-      </details>
-      {% endfor %}
+      {% if sections %}
+        {% for section in sections %}
+        <details class="mb-4 bg-blue-100 dark:bg-blue-900 p-4 rounded-lg">
+          <summary class="cursor-pointer text-lg font-semibold text-blue-800 dark:text-blue-300">
+            {{ section.label }}
+          </summary>
 
-      <div class="mt-6 bg-green-100 dark:bg-green-900 p-4 rounded-lg">
-        <h3 class="text-lg font-semibold text-green-800 dark:text-green-300">✅ Final Comments & Total Score</h3>
-        <p><strong>Total Score:</strong> {{ total_score }}/100</p>
-        <p>{{ final_comments }}</p>
-      </div>
+          <div class="mt-3 space-y-2 text-gray-800 dark:text-gray-200">
+            <p><strong>Score:</strong> {{ section.data.score }}</p>
+            <p><strong>Reason:</strong> {{ section.data.reason }}</p>
+            <p><strong>Suggestion:</strong> {{ section.data.suggestion }}</p>
+          </div>
+        </details>
+        {% endfor %}
+
+        <div class="mt-6 bg-green-100 dark:bg-green-900 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-green-800 dark:text-green-300">
+            ✅ Final Comments & Total Score
+          </h3>
+
+          <p><strong>Total Score:</strong> {{ total_score }}/100</p>
+          <p>{{ final_comments }}</p>
+        </div>
+      {% else %}
+        <p class="text-gray-600 dark:text-gray-400">
+          No evaluation available yet. Click <strong>Refresh Latest Call</strong> to retrieve and score the most recent call.
+        </p>
+      {% endif %}
     </div>
 
-    <!-- 📜 Transcript -->
     <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
       <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📜 Call Transcript</h2>
 
@@ -141,15 +206,16 @@
       <div class="space-y-6">
         {% for entry in formatted_transcript %}
         <div class="flex {% if entry.speaker|lower|cut:' ' == 'ai' %}justify-start{% else %}justify-end{% endif %}">
-          <div class="max-w-[75%] px-5 py-3 rounded-2xl shadow-sm 
-                      {% if entry.speaker|lower|cut:' ' == 'ai' %}
-                          bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-tl-none
-                      {% else %}
-                          bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 rounded-tr-none
-                      {% endif %}">
+          <div class="max-w-[75%] px-5 py-3 rounded-2xl shadow-sm
+          {% if entry.speaker|lower|cut:' ' == 'ai' %}
+          bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-tl-none
+          {% else %}
+          bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 rounded-tr-none
+          {% endif %}">
             <p class="text-xs font-semibold opacity-70 mb-1">
               {{ entry.speaker }}
             </p>
+
             <p class="text-sm leading-relaxed whitespace-pre-line">
               {{ entry.message }}
             </p>
@@ -162,24 +228,74 @@
       {% endif %}
     </div>
 
-    <!-- 🔊 Call Recording -->
     {% if recording_url %}
     <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
-      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🔊 Call Recording</h2>
+      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+        🔊 Call Recording
+      </h2>
+
       <audio controls class="w-full">
         <source src="{{ recording_url }}" type="audio/mpeg" />
-        Your browser does not support the audio element.
       </audio>
     </div>
     {% endif %}
-  </main>
-  {% endif %}
+    {% endif %}
 
-  <!-- Footer -->
+  </main>
+
   <footer class="bg-gray-200 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-center py-4 text-sm">
     &copy; 2025 Fred Davis CRM
   </footer>
 
-</body>
+  <script>
+    function showLoadingOverlay() {
+      const overlay = document.getElementById("loading-overlay");
+      const progressBar = document.getElementById("loading-progress-bar");
+      const message = document.getElementById("loading-message");
 
+      const messages = [
+        "This will take a minute. Evaluating your results now...",
+        "Pulling your latest Vapi call...",
+        "Scoring transcript and checking objections handled...",
+        "Almost there — building your coaching feedback..."
+      ];
+
+      let progress = 0;
+      let messageIndex = 0;
+
+      overlay.classList.remove("hidden");
+      document.body.classList.add("overflow-hidden");
+
+      message.textContent = messages[0];
+      progressBar.style.width = "8%";
+
+      const progressInterval = setInterval(() => {
+        if (progress < 90) {
+          progress += Math.random() * 12;
+          progressBar.style.width = Math.min(progress, 90) + "%";
+        }
+      }, 700);
+
+      const messageInterval = setInterval(() => {
+        messageIndex = (messageIndex + 1) % messages.length;
+        message.textContent = messages[messageIndex];
+      }, 2200);
+
+      window.loadingIntervals = { progressInterval, messageInterval };
+    }
+
+    function attachRefreshLoader(id) {
+      const link = document.getElementById(id);
+      if (!link) return;
+
+      link.addEventListener("click", function () {
+        showLoadingOverlay();
+      });
+    }
+
+    attachRefreshLoader("refresh-link");
+    attachRefreshLoader("refresh-link-empty");
+  </script>
+
+</body>
 </html>
