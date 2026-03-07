@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
@@ -6,148 +7,225 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Outbound Calls</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- tsParticles -->
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
   <style>
-    body {
+    .nav-link,
+    .footer-link {
       position: relative;
+      color: #2563eb;
+      text-decoration: none;
+      transition: all 0.25s ease;
     }
 
-    .btn-bubble {
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .btn-bubble:hover,
-    .btn-bubble:focus {
-      transform: translateY(-6px) scale(1.05);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
-    }
-
-    .nav-link {
-      position: relative;
-      transition: color 0.25s ease;
-    }
-
-    .nav-link::after {
+    .nav-link::after,
+    .footer-link::after {
       content: '';
       position: absolute;
       left: 0;
-      bottom: -4px;
+      bottom: -3px;
       width: 100%;
       height: 2px;
-      background: currentColor;
+      background: #2563eb;
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.25s ease;
+      transition: transform .25s ease;
     }
 
-    .nav-link:hover::after {
+    .nav-link:hover::after,
+    .footer-link:hover::after {
       transform: scaleX(1);
+    }
+
+    .btn-bubble {
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .btn-bubble:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .15);
+    }
+
+    .gold-score {
+      background: linear-gradient(90deg,
+          #facc15,
+          #fbbf24,
+          #ffffff,
+          #f59e0b,
+          #facc15);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 3s linear infinite;
+      font-weight: 700;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(191, 219, 254, 0.8);
+    }
+
+    @keyframes shine {
+      to {
+        background-position: 200% center;
+      }
     }
   </style>
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans relative min-h-screen flex flex-col">
+<body
+  class="bg-gradient-to-br from-blue-100 via-white to-blue-300 flex flex-col min-h-screen relative overflow-x-hidden text-blue-900">
 
   <!-- Particle Canvas -->
-  <canvas id="outbound-particles" class="absolute inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
+  <canvas id="hero-particles" class="fixed inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
 
   <!-- Header -->
-  <header class="bg-blue-500 text-white py-6 shadow-md animate-fade-in">
-    <div class="container mx-auto flex justify-between items-center px-6">
-      <h1 class="text-2xl font-bold">Outbound Calls</h1>
-      <a href="{% url 'home' %}" class="btn-bubble bg-white text-blue-500 px-4 py-2 rounded shadow font-bold hover:bg-gray-100 transition">
+  <header class="py-6 relative z-10">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6">
+
+      <h1 class="text-2xl md:text-3xl font-bold">
+        NeuraDrive
+      </h1>
+
+      <a href="{% url 'home' %}"
+        class="btn-bubble bg-white text-blue-600 px-4 py-2 rounded shadow font-bold hover:bg-gray-100">
         Log Out
       </a>
+
     </div>
   </header>
 
   <!-- Navigation Tabs -->
-  <nav class="bg-white dark:bg-gray-800 shadow-md z-10 relative">
-    <div class="container mx-auto flex justify-center space-x-6 py-4">
-      <a href="/customer_discovery/" class="nav-link text-blue-500 dark:text-blue-300 font-semibold">Customer Discovery</a>
-      <a href="/outbound_calls/" class="nav-link text-blue-500 dark:text-blue-300 font-semibold">Outbound Calls</a>
-      <a href="/inbound_calls/" class="nav-link text-blue-500 dark:text-blue-300 font-semibold">Inbound Calls</a>
+  <nav class="relative z-10">
+    <div class="max-w-7xl mx-auto flex justify-center space-x-8 py-4">
+
+      <a href="/customer_discovery/" class="nav-link font-semibold px-4 py-2 rounded-full hover:bg-white/20">
+        Customer Discovery
+      </a>
+
+      <a href="/outbound_calls/" class="nav-link font-semibold px-4 py-2 rounded-full hover:bg-white/20">
+        Outbound Calls
+      </a>
+
+      <a href="/inbound_calls/" class="nav-link font-semibold px-4 py-2 rounded-full hover:bg-white/20">
+        Inbound Calls
+      </a>
+
     </div>
   </nav>
 
   <!-- Welcome Heading -->
-  <section class="text-center mt-10 z-10 relative">
-    <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-8">Welcome to Outbound Calls</h2>
+  <section class="text-center mt-10 relative z-10">
+    <h2 class="text-4xl font-bold mb-8">
+      Welcome to Outbound Calls
+    </h2>
   </section>
 
   <!-- Info Section -->
-  <section class="container mx-auto my-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center z-10 relative">
-    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">📞 Enhance Your Selling Skills with AI-Powered Training Calls</h2>
-    <p class="text-gray-600 dark:text-gray-300 mb-2">
+  <section class="max-w-5xl mx-auto my-8 bg-white p-8 rounded-2xl shadow-md text-center relative z-10">
+
+    <h2 class="text-3xl font-bold mb-4">
+      📞 Enhance Your Selling Skills with AI-Powered Training Calls
+    </h2>
+
+    <p class="text-gray-700 mb-2">
       Our <strong>AI Voice Bots</strong> simulate realistic customer interactions, each with unique personalities,
       objections, and buying scenarios, to sharpen your sales abilities and boost your confidence.
     </p>
 
-    <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4 mb-2">🚀 How to Use:</h3>
-    <ul class="list-disc list-inside text-left inline-block text-gray-600 dark:text-gray-300">
+    <h3 class="text-xl font-semibold mt-6 mb-2">🚀 How to Use:</h3>
+
+    <ul class="list-disc list-inside text-left inline-block text-gray-700">
       <li><strong>Answer Naturally:</strong> Treat every call as if you're speaking with a real customer.</li>
-      <li><strong>Handle Objections:</strong> Listen carefully, respond thoughtfully, and practice overcoming common buying hesitations.</li>
-      <li><strong>Review Feedback:</strong> After each call, review the detailed evaluation provided in your dashboard to pinpoint strengths and areas for improvement.</li>
+      <li><strong>Handle Objections:</strong> Listen carefully, respond thoughtfully, and practice overcoming common
+        buying hesitations.</li>
+      <li><strong>Review Feedback:</strong> After each call, review the detailed evaluation provided in your dashboard
+        to pinpoint strengths and areas for improvement.</li>
     </ul>
 
-    <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4 mb-2">📈 Get Better Every Call:</h3>
-    <ul class="list-disc list-inside text-left inline-block text-gray-600 dark:text-gray-300">
+    <h3 class="text-xl font-semibold mt-6 mb-2">📈 Get Better Every Call:</h3>
+
+    <ul class="list-disc list-inside text-left inline-block text-gray-700">
       <li><strong>Gain Practical Experience:</strong> Engage regularly to master different customer scenarios.</li>
-      <li><strong>Learn and Adjust:</strong> Leverage personalized insights and call transcripts to refine your approach.</li>
-      <li><strong>Track Your Progress:</strong> Monitor your ongoing improvement through performance metrics and success evaluations.</li>
+      <li><strong>Learn and Adjust:</strong> Leverage personalized insights and call transcripts to refine your
+        approach.</li>
+      <li><strong>Track Your Progress:</strong> Monitor your ongoing improvement through performance metrics and success
+        evaluations.</li>
     </ul>
 
-    <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4 mb-2">🎯 Visual Progress Indicators:</h3>
-    <p class="text-gray-600 dark:text-gray-300 mb-2">
-      Each user’s button reflects your progress. Buttons start as <span class="font-semibold text-blue-500">blue</span> until you successfully book an appointment with that user.
+    <h3 class="text-xl font-semibold mt-6 mb-2">🎯 Visual Progress Indicators:</h3>
+
+    <p class="text-gray-700 mb-2">
+      Each user’s button reflects your progress. Buttons start as <span class="font-semibold text-blue-500">blue</span>
+      until you successfully book an appointment with that user.
       Once booked, the button color updates based on your performance score:
     </p>
-    <ul class="list-disc list-inside text-left inline-block text-gray-600 dark:text-gray-300">
-      <li><strong class="text-amber-500">100:</strong> Gold (Perfect score)</li>
-      <li><strong class="text-green-600">90–99:</strong> Excellent</li>
-      <li><strong class="text-lime-500">75–89:</strong> Strong</li>
-      <li><strong class="text-yellow-400">60–74:</strong> Solid</li>
-      <li><strong class="text-orange-400">45–59:</strong> Needs Improvement</li>
-      <li><strong class="text-orange-500">30–44:</strong> Weak</li>
-      <li><strong class="text-red-500">15–29:</strong> Poor</li>
-      <li><strong class="text-red-600">0–14:</strong> Critical</li>
+
+    <ul class="list-disc list-inside text-left inline-block text-gray-700">
+      <li><strong class="gold-score">100:</strong> Gold (Perfect score)</li>
+      <li><strong style="color:#059669;">90–99:</strong> Excellent</li>
+      <li><strong style="color:#84cc16;">75–89:</strong> Strong</li>
+      <li><strong style="color:#fbbf24;">60–74:</strong> Solid</li>
+      <li><strong style="color:#fb923c;">45–59:</strong> Needs Improvement</li>
+      <li><strong style="color:#f97316;">30–44:</strong> Weak</li>
+      <li><strong style="color:#ef4444;">15–29:</strong> Poor</li>
+      <li><strong style="color:#dc2626;">0–14:</strong> Critical</li>
     </ul>
 
-    <p class="text-xs italic text-gray-500 dark:text-gray-400 mt-6">*Note: Highest scores are saved for each VoiceBot.</p>
+    <p class="text-xs italic text-gray-500 mt-6">
+      *Note: Highest scores are saved for each VoiceBot.
+    </p>
+
   </section>
 
-  <!-- Main Call Buttons -->
-  <main class="flex-grow flex items-center justify-center px-4 z-10 relative">
+  <!-- Call Buttons -->
+  <main class="flex-grow flex items-center justify-center px-4 relative z-10">
+
     <div class="text-center">
+
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-8">
+
         {% for btn in buttons %}
+
         <a href="{{ btn.href }}"
-          class="{{ btn.color }} text-white font-semibold rounded-full w-40 h-16 flex items-center justify-center shadow-md hover:scale-105 transition duration-300 ease-in-out transform">
+          class="{{ btn.color }} btn-bubble text-white font-semibold rounded-full w-40 h-16 flex items-center justify-center shadow-md">
+
           {{ btn.name }}
+
         </a>
+
         {% endfor %}
+
       </div>
+
     </div>
+
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-4 text-center text-sm mt-8 z-10 relative">
-    <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
+  <footer class="py-6 mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto text-center px-4">
+
+      <p class="font-medium">
+        © 2025 Automated AI. All Rights Reserved.
+      </p>
+
+      <nav class="flex justify-center space-x-6 mt-4 text-sm">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Contact Us</a>
+      </nav>
+
+    </div>
   </footer>
 
-  <!-- Particle Script -->
   <script>
-    window.addEventListener("load", async () => {
-      await tsParticles.load("outbound-particles", {
+    document.addEventListener("DOMContentLoaded", async () => {
+      await tsParticles.load("hero-particles", {
         fullScreen: { enable: false },
-        background: { color: { value: "#f3f4f6" } },
-        fpsLimit: 60,
+        background: { color: { value: "transparent" } },
         interactivity: {
           events: {
             onHover: { enable: true, mode: "repulse" },
@@ -160,24 +238,16 @@
           }
         },
         particles: {
-          color: { value: "#60a5fa" },
+          color: { value: "#3b82f6" },
           links: {
             enable: true,
-            color: "#60a5fa",
-            distance: 120,
-            opacity: 0.4,
-            width: 1
+            color: "#3b82f6",
+            distance: 130,
+            opacity: 0.4
           },
-          move: {
-            enable: true,
-            speed: 1,
-            outModes: { default: "bounce" }
-          },
-          number: {
-            value: 40,
-            density: { enable: true, area: 800 }
-          },
-          opacity: { value: 0.6 },
+          move: { enable: true, speed: 1 },
+          number: { value: 45 },
+          opacity: { value: 0.5 },
           shape: { type: "circle" },
           size: { value: { min: 1, max: 4 } }
         },

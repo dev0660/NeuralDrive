@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
@@ -5,57 +6,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Customer Details - Fred Davis</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          keyframes: {
-            bob: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-8px)' }
-            },
-            blink: {
-              '0%, 45%, 100%': { transform: 'scaleY(1)' },
-              '50%': { transform: 'scaleY(0.1)' }
-            },
-            floatBubble: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-4px)' }
-            }
-          },
-          animation: {
-            bob: 'bob 2s ease-in-out infinite',
-            blink: 'blink 3s infinite',
-            floatBubble: 'floatBubble 2.2s ease-in-out infinite'
-          }
-        },
-      },
-      darkMode: 'class',
-    };
-  </script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .nav-link,
+    .footer-link {
+      position: relative;
+      color: #2563eb;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link::after,
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 2px;
+      background: #2563eb;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-link:hover::after,
+    .footer-link:hover::after,
+    .nav-link:focus::after,
+    .footer-link:focus::after {
+      transform: scaleX(1);
+    }
+
+    .btn-bubble {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-bubble:hover,
+    .btn-bubble:focus {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes blink {
+      0%, 45%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.1); }
+    }
+
+    @keyframes floatBubble {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .animate-bob {
+      animation: bob 2s ease-in-out infinite;
+    }
+
+    .animate-blink {
+      animation: blink 3s infinite;
+    }
+
+    .animate-floatBubble {
+      animation: floatBubble 2.2s ease-in-out infinite;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(191, 219, 254, 0.8);
+    }
+  </style>
 </head>
 
-<body
-  class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen font-sans transition-colors duration-300">
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-300 text-blue-900 flex flex-col min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+  <!-- Particle Canvas -->
+  <canvas id="hero-particles" class="fixed inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
 
   <!-- Loading Overlay -->
   <div id="loading-overlay"
-    class="hidden fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center px-6">
-    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-xl w-full p-8 text-center relative">
+    class="hidden fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm flex items-center justify-center px-6">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-8 text-center relative">
 
       <div class="mb-6">
         <div
-          class="inline-block relative bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-2xl px-6 py-4 shadow animate-floatBubble">
+          class="inline-block relative bg-blue-100 text-blue-900 rounded-2xl px-6 py-4 shadow animate-floatBubble">
           <p id="loading-message" class="text-lg font-semibold">
             This will take a minute. Evaluating your results now...
           </p>
           <div
-            class="absolute left-1/2 -bottom-3 -translate-x-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[14px] border-l-transparent border-r-transparent border-t-blue-100 dark:border-t-blue-900">
+            class="absolute left-1/2 -bottom-3 -translate-x-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[14px] border-l-transparent border-r-transparent border-t-blue-100">
           </div>
         </div>
       </div>
@@ -76,51 +128,51 @@
         </div>
       </div>
 
-      <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
+      <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
         <div id="loading-progress-bar"
           class="bg-blue-600 h-4 w-0 transition-all duration-700 ease-out rounded-full"></div>
       </div>
 
-      <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+      <p class="mt-4 text-sm text-gray-500">
         Pulling the latest call, scoring it, and updating your dashboard.
       </p>
     </div>
   </div>
 
   <!-- Header -->
-  <header class="bg-blue-600 text-white py-6 shadow-md">
-    <div class="container mx-auto flex justify-between items-center px-6">
-      <h1 class="text-3xl font-bold tracking-wide">Customer Details</h1>
-      <div class="flex items-center space-x-4">
-        <a href="/outbound_calls/" class="text-white hover:underline text-sm">← Back to Outbound Calls</a>
+  <header class="py-6 relative z-10">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6">
+      <h1 class="text-3xl font-bold tracking-wide">Fred Davis</h1>
+
+      <div class="flex items-center space-x-4 flex-wrap justify-end">
+        <a href="/outbound_calls/" class="nav-link text-sm font-medium">
+          ← Back to Outbound Calls
+        </a>
 
         <a href="?refresh=1"
           id="refresh-link"
-          class="bg-yellow-400 text-blue-900 px-3 py-1 rounded hover:bg-yellow-300 text-sm font-medium transition shadow">
+          class="btn-bubble bg-yellow-400 text-blue-900 px-3 py-2 rounded shadow font-medium hover:bg-yellow-300 text-sm transition">
           🔄 Refresh Latest Call
         </a>
 
         <a href="{% url 'call_history_fred_davis' assistant_name='Fred Davis' %}"
-          class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition shadow">
+          class="btn-bubble bg-white text-blue-600 px-3 py-2 rounded shadow font-medium hover:bg-gray-100 text-sm transition">
           📜 Call History
         </a>
-
-        <button onclick="document.documentElement.classList.toggle('dark')"
-          class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200 text-sm font-medium transition">
-          Toggle Dark Mode
-        </button>
+        
       </div>
     </div>
   </header>
 
-  <main class="flex-grow container mx-auto py-12">
+  <!-- Main -->
+  <main class="flex-grow max-w-7xl mx-auto py-12 px-6 relative z-10">
 
-    <!-- Contact + Vehicle Info ALWAYS VISIBLE -->
+    <!-- Contact + Vehicle Info -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
-        <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📇 Contact Details</h2>
-        <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+      <div class="glass-card p-6 rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-semibold text-blue-600 mb-4">📇 Contact Details</h2>
+        <ul class="text-gray-700 space-y-2">
           <li><strong>Name:</strong> Fred Davis</li>
           <li><strong>Phone:</strong> (731) 418-8001</li>
           <li><strong>Email:</strong> fokoye.tx@gmail.com</li>
@@ -129,9 +181,9 @@
         </ul>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
-        <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">🚗 Vehicle Info</h2>
-        <ul class="text-gray-700 dark:text-gray-300 space-y-2">
+      <div class="glass-card p-6 rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-semibold text-blue-600 mb-4">🚗 Vehicle Info</h2>
+        <ul class="text-gray-700 space-y-2">
           <li><strong>Vehicle:</strong> 2020 Toyota RAV4 XLE (Magnetic Gray)</li>
           <li><strong>Mileage:</strong> 46,280 miles</li>
           <li><strong>VIN:</strong> 2T3R1RFV0LC072541</li>
@@ -148,35 +200,35 @@
     </div>
 
     {% if empty_state_message %}
-    <div class="bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-md mt-12 text-center">
-      <h2 class="text-3xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+    <div class="glass-card p-10 rounded-2xl shadow-lg mt-12 text-center">
+      <h2 class="text-3xl font-semibold text-blue-600 mb-4">
         No Call Found Yet
       </h2>
 
-      <p class="text-gray-600 dark:text-gray-300 text-lg mb-6">
+      <p class="text-gray-600 text-lg mb-6">
         {{ empty_state_message }}
       </p>
 
       <a href="?refresh=1"
         id="refresh-link-empty"
-        class="bg-yellow-400 text-blue-900 px-5 py-3 rounded-lg hover:bg-yellow-300 text-sm font-semibold transition shadow inline-block">
+        class="btn-bubble bg-yellow-400 text-blue-900 px-5 py-3 rounded-lg hover:bg-yellow-300 text-sm font-semibold transition shadow inline-block">
         🔄 Refresh Latest Call
       </a>
     </div>
 
     {% else %}
 
-    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
-      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">✅ Success Evaluation</h2>
+    <div class="glass-card p-8 rounded-2xl shadow-lg mt-12">
+      <h2 class="text-2xl font-semibold text-blue-600 mb-4">✅ Success Evaluation</h2>
 
       {% if sections %}
         {% for section in sections %}
-        <details class="mb-4 bg-blue-100 dark:bg-blue-900 p-4 rounded-lg">
-          <summary class="cursor-pointer text-lg font-semibold text-blue-800 dark:text-blue-300">
+        <details class="mb-4 bg-blue-100/80 p-4 rounded-lg shadow-sm">
+          <summary class="cursor-pointer text-lg font-semibold text-blue-800">
             {{ section.label }}
           </summary>
 
-          <div class="mt-3 space-y-2 text-gray-800 dark:text-gray-200">
+          <div class="mt-3 space-y-2 text-gray-800">
             <p><strong>Score:</strong> {{ section.data.score }}</p>
             <p><strong>Reason:</strong> {{ section.data.reason }}</p>
             <p><strong>Suggestion:</strong> {{ section.data.suggestion }}</p>
@@ -184,8 +236,8 @@
         </details>
         {% endfor %}
 
-        <div class="mt-6 bg-green-100 dark:bg-green-900 p-4 rounded-lg">
-          <h3 class="text-lg font-semibold text-green-800 dark:text-green-300">
+        <div class="mt-6 bg-green-100 p-4 rounded-lg shadow-sm">
+          <h3 class="text-lg font-semibold text-green-800">
             ✅ Final Comments & Total Score
           </h3>
 
@@ -193,14 +245,14 @@
           <p>{{ final_comments }}</p>
         </div>
       {% else %}
-        <p class="text-gray-600 dark:text-gray-400">
+        <p class="text-gray-600">
           No evaluation available yet. Click <strong>Refresh Latest Call</strong> to retrieve and score the most recent call.
         </p>
       {% endif %}
     </div>
 
-    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
-      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">📜 Call Transcript</h2>
+    <div class="glass-card p-8 rounded-2xl shadow-lg mt-12">
+      <h2 class="text-2xl font-semibold text-blue-600 mb-4">📜 Call Transcript</h2>
 
       {% if formatted_transcript %}
       <div class="space-y-6">
@@ -208,9 +260,9 @@
         <div class="flex {% if entry.speaker|lower|cut:' ' == 'ai' %}justify-start{% else %}justify-end{% endif %}">
           <div class="max-w-[75%] px-5 py-3 rounded-2xl shadow-sm
           {% if entry.speaker|lower|cut:' ' == 'ai' %}
-          bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-tl-none
+          bg-blue-100 text-blue-900 rounded-tl-none
           {% else %}
-          bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 rounded-tr-none
+          bg-green-100 text-green-900 rounded-tr-none
           {% endif %}">
             <p class="text-xs font-semibold opacity-70 mb-1">
               {{ entry.speaker }}
@@ -224,13 +276,13 @@
         {% endfor %}
       </div>
       {% else %}
-      <p class="text-gray-600 dark:text-gray-400">No transcript available.</p>
+      <p class="text-gray-600">No transcript available.</p>
       {% endif %}
     </div>
 
     {% if recording_url %}
-    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md mt-12">
-      <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+    <div class="glass-card p-8 rounded-2xl shadow-lg mt-12">
+      <h2 class="text-2xl font-semibold text-blue-600 mb-4">
         🔊 Call Recording
       </h2>
 
@@ -243,11 +295,56 @@
 
   </main>
 
-  <footer class="bg-gray-200 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-center py-4 text-sm">
-    &copy; 2025 Fred Davis CRM
+  <!-- Footer -->
+  <footer class="py-6 mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto text-center px-4">
+      <p class="text-blue-900 font-medium">&copy; 2025 Fred Davis CRM</p>
+      <nav class="flex justify-center space-x-6 mt-4 text-sm">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Contact Us</a>
+      </nav>
+    </div>
   </footer>
 
   <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        await tsParticles.load("hero-particles", {
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "repulse" },
+              onClick: { enable: true, mode: "push" },
+              resize: true
+            },
+            modes: {
+              repulse: { distance: 100, duration: 0.4 },
+              push: { quantity: 4 }
+            }
+          },
+          particles: {
+            color: { value: "#3b82f6" },
+            links: {
+              enable: true,
+              color: "#3b82f6",
+              distance: 130,
+              opacity: 0.4
+            },
+            move: { enable: true, speed: 1 },
+            number: { value: 45 },
+            opacity: { value: 0.5 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 4 } }
+          },
+          detectRetina: true
+        });
+      } catch (error) {
+        console.error("Particle load error:", error);
+      }
+    });
+
     function showLoadingOverlay() {
       const overlay = document.getElementById("loading-overlay");
       const progressBar = document.getElementById("loading-progress-bar");

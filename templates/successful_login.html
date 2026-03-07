@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,72 +6,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Account Created - Jarvis AI</title>
+
+  <!-- Tailwind + tsParticles -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
   <style>
-    .nav-link {
+    .nav-link,
+    .footer-link,
+    .tab-link {
       position: relative;
-      transition: color 0.25s ease;
+      color: #2563eb;
+      text-decoration: none;
+      transition: all 0.25s ease;
     }
 
-    .nav-link::after {
+    .nav-link::after,
+    .footer-link::after,
+    .tab-link::after {
       content: '';
       position: absolute;
       left: 0;
-      bottom: -4px;
+      bottom: -3px;
       width: 100%;
       height: 2px;
-      background: currentColor;
+      background: #2563eb;
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.25s ease;
     }
 
     .nav-link:hover,
-    .nav-link:focus {
-      color: #1d4ed8;
+    .nav-link:focus,
+    .footer-link:hover,
+    .footer-link:focus,
+    .tab-link:hover,
+    .tab-link:focus {
+      color: #2563eb;
     }
 
     .nav-link:hover::after,
-    .nav-link:focus::after {
-      transform: scaleX(1);
-    }
-
-    .footer-link {
-      position: relative;
-      color: #d1d5db;
-      transition: color 0.2s ease;
-      padding-bottom: 2px;
-    }
-
-    .footer-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 1px;
-      width: 100%;
-      background-color: currentColor;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.2s ease;
-    }
-
-    .footer-link:hover,
-    .footer-link:focus {
-      color: #ffffff;
-    }
-
+    .nav-link:focus::after,
     .footer-link:hover::after,
-    .footer-link:focus::after {
+    .footer-link:focus::after,
+    .tab-link:hover::after,
+    .tab-link:focus::after {
       transform: scaleX(1);
-    }
-
-    .footer-link:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
-      border-radius: 2px;
     }
 
     .btn-bubble {
@@ -85,43 +66,54 @@
   </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col relative">
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-300 min-h-screen flex flex-col relative overflow-x-hidden text-blue-900">
+
+  <!-- Particle Canvas -->
+  <canvas id="hero-particles" class="fixed inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
 
   <!-- Header -->
-  <header class="bg-blue-500 text-white py-6">
+  <header class="py-6 relative z-10">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6">
-      <h1 class="text-2xl font-bold">Jarvis AI</h1>
+      <h1 class="text-2xl md:text-3xl font-bold text-blue-900">NeuraDrive</h1>
+
       <a href="{% url 'home' %}"
-        class="btn-bubble bg-white text-blue-500 px-4 py-2 rounded shadow font-bold hover:bg-gray-100 transition">
+        class="btn-bubble bg-white text-blue-600 px-4 py-2 rounded shadow font-bold hover:bg-gray-100 transition">
         Log Out
       </a>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
-  <nav class="bg-white shadow-md">
-    <div class="max-w-7xl mx-auto flex justify-center space-x-6 py-4">
-      <a href="/customer_discovery/" class="nav-link text-blue-500 font-semibold hover:text-blue-700">Customer
-        Discovery</a>
-      <a href="/outbound_calls/" class="nav-link text-blue-500 font-semibold hover:text-blue-700">Outbound Calls</a>
-      <a href="/inbound_calls/" class="nav-link text-blue-500 font-semibold hover:text-blue-700">Inbound Calls</a>
+  <nav class="relative z-10">
+    <div class="max-w-7xl mx-auto flex justify-center space-x-8 py-4 px-6">
+      <a href="/customer_discovery/" class="tab-link px-4 py-2 rounded-full hover:bg-white/20 font-semibold">
+        Customer Discovery
+      </a>
+      <a href="/outbound_calls/" class="tab-link px-4 py-2 rounded-full hover:bg-white/20 font-semibold">
+        Outbound Calls
+      </a>
+      <a href="/inbound_calls/" class="tab-link px-4 py-2 rounded-full hover:bg-white/20 font-semibold">
+        Inbound Calls
+      </a>
     </div>
   </nav>
 
   <!-- Hero Area -->
-  <main class="relative flex-grow flex items-center justify-center bg-white overflow-hidden">
-    <canvas id="hero-particles" class="absolute inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
-
+  <main class="relative flex-grow flex items-center justify-center overflow-hidden z-10">
     <div class="relative z-10 text-center px-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome {{ user.username }}!</h2>
-      <p class="text-lg text-gray-600 mb-6">Choose an option above to begin.</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+        Welcome {{ user.username }}!
+      </h2>
+      <p class="text-lg text-gray-700 mb-6 font-medium">
+        Choose an option above to begin.
+      </p>
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-6 mt-auto">
+  <footer class="py-6 mt-auto relative z-10">
     <div class="max-w-7xl mx-auto text-center px-4">
-      <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
+      <p class="text-blue-900 font-medium">&copy; 2025 Automated AI. All Rights Reserved.</p>
       <nav class="flex justify-center space-x-6 mt-4 text-sm">
         <a href="#" class="footer-link">Privacy Policy</a>
         <a href="#" class="footer-link">Terms of Service</a>
@@ -130,50 +122,46 @@
     </div>
   </footer>
 
-  <!-- Particle Canvas Config -->
+  <!-- Particle Configuration -->
   <script>
-    window.addEventListener("load", async () => {
-      await tsParticles.load("hero-particles", {
-        fullScreen: { enable: false },
-        background: { color: { value: "#ffffff" } },
-        fpsLimit: 60,
-        interactivity: {
-          events: {
-            onHover: { enable: true, mode: "repulse" },
-            onClick: { enable: true, mode: "push" },
-            resize: true
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        await tsParticles.load("hero-particles", {
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "repulse" },
+              onClick: { enable: true, mode: "push" },
+              resize: true
+            },
+            modes: {
+              repulse: { distance: 100, duration: 0.4 },
+              push: { quantity: 4 }
+            }
           },
-          modes: {
-            repulse: { distance: 100, duration: 0.4 },
-            push: { quantity: 4 }
-          }
-        },
-        particles: {
-          color: { value: "#60a5fa" },
-          links: {
-            enable: true,
-            color: "#60a5fa",
-            distance: 120,
-            opacity: 0.4,
-            width: 1
+          particles: {
+            color: { value: "#3b82f6" },
+            links: {
+              enable: true,
+              color: "#3b82f6",
+              distance: 130,
+              opacity: 0.4
+            },
+            move: { enable: true, speed: 1 },
+            number: { value: 45 },
+            opacity: { value: 0.5 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 4 } }
           },
-          move: {
-            enable: true,
-            speed: 1,
-            outModes: { default: "bounce" }
-          },
-          number: {
-            value: 40,
-            density: { enable: true, area: 800 }
-          },
-          opacity: { value: 0.6 },
-          shape: { type: "circle" },
-          size: { value: { min: 1, max: 4 } }
-        },
-        detectRetina: true
-      });
+          detectRetina: true
+        });
+      } catch (error) {
+        console.error("Particle load error:", error);
+      }
     });
   </script>
+
 </body>
 
 </html>
