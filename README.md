@@ -36,19 +36,13 @@ Sales teams need realistic practice, not static scripts. I built this platform t
 
 ## System Architecture
 
-Sales Rep
-   ↓
-Django Web App
-   ↓
-Vapi Voice Assistant
-   ↓
-Call Transcript + Metadata
-   ↓
-OpenAI Evaluation Pipeline
-   ↓
-CallAnalysis Model / Database
-   ↓
-Score Review, Call History, Leaderboards
+1. Sales Rep
+2. Django Web App
+3. Vapi Voice Assistant
+4. Call Transcript + Metadata
+5. OpenAI Evaluation Pipeline
+6. CallAnalysis Model / Database
+7. Score Review, Call History, Leaderboards
 
 ## Tech Stack
 
