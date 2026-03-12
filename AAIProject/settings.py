@@ -19,9 +19,6 @@ from dotenv import load_dotenv
 # ✅ Load environment variables from .env
 load_dotenv()
 
-# ✅ Optional: check if loaded correctly
-print("🔑 Loaded OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY")[:10])
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,7 +32,7 @@ SECRET_KEY = 'django-insecure-lfuwvvjj3wwj18w-88r!#c&5k#h910z%j-jmo35o9oq18@(mxx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ["3.12.149.108", "localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
