@@ -1,99 +1,231 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Features - Automated AI</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features - Automated AI</title>
+
+  <!-- Tailwind + tsParticles -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+  <style>
+    .nav-link,
+    .footer-link {
+      position: relative;
+      color: #1e3a8a;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link::after,
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 2px;
+      background: #1e3a8a;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus::after,
+    .footer-link:hover::after,
+    .footer-link:focus::after {
+      transform: scaleX(1);
+    }
+
+    .btn-bubble {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-bubble:hover,
+    .btn-bubble:focus {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.14);
+    }
+  </style>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
-    <header class="bg-blue-500 text-white py-6 relative">
-        <div class="container mx-auto flex items-center">
-            <h1 class="text-2xl font-bold">Jarvis AI</h1>
-            <nav class="ml-auto">
-                <ul class="flex space-x-4 pr-20">
-                    <li><a href="/" class="hover:underline">Home</a></li>
-                    <li><a href="/faq" class="hover:underline">FAQ</a></li>
-                    <li><a href="/pricing" class="hover:underline">Pricing</a></li>
-                    <li><a href="/testimonials" class="hover:underline">Testimonials</a></li>
-                </ul>
-            </nav>
-            <div class="ml-6 bg-white text-blue-500 px-4 py-2 rounded shadow hover:bg-gray-100 absolute top-4 right-4">
-                <a href="/signin" class="font-bold">Sign In</a>
-            </div>
-        </div>
-    </header>
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-300 flex flex-col min-h-screen relative overflow-x-hidden text-blue-900">
 
-    <main class="flex-grow bg-white py-10">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-6">Features 🚀</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">📞 Realistic AI Sales Simulations</h4>
-                    <p>Train salespeople with ultra-realistic, voice-based outbound call simulations that mimic real
-                        dealership sales scenarios.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">🔁 Scenario Customization</h4>
-                    <p>We can build and tweak AI customer personas and scenarios to fit any sales process, product line,
-                        or dealership campaign.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">📊 Automatic Sales Rep Evaluation</h4>
-                    <p>Each call is analyzed instantly with AI-driven feedback, giving reps detailed scores and coaching
-                        on objection handling, tone, product knowledge, and more.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">📈 Performance Analytics Dashboard (Currently In the Works)</h4>
-                    <p>Managers get full visibility into rep performance with real-time dashboards, historical
-                        comparisons, and exportable reports.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">🧠 AI Objection Library</h4>
-                    <p>Continuously expanding database of real-world objections (e.g. “I need to talk to my wife first”)
-                        that AI customers can throw at sales reps — ensuring reps are always prepared for the most
-                        common and toughest objections.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">🕒 Call Scheduling & Reminders (Currently In the Works)</h4>
-                    <p>Allow reps to schedule practice calls and receive reminders, creating consistent daily training
-                        habits without manual oversight.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">🎯 Personalized Training Plans (Currently In the Works)</h4>
-                    <p>Automatically generate improvement plans based on a rep’s performance history — e.g. "Work on
-                        handling price objections" or "Improve call openers".</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">🎥 Post-Call Replay & Annotations (Currently In the Works)</h4>
-                    <p>Reps and managers can review recordings with AI-generated annotations showing key moments, missed
-                        opportunities, and strengths.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">🔄 Multi-Scenario Rotation</h4>
-                    <p>Rotate between different call scenarios: lease vs. finance, first-time buyers, trade-in
-                        discussions, cold leads, etc. — so reps don’t get too used to one script.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <h4 class="font-bold mb-2">🔐 Data Security & Compliance</h4>
-                    <p>We follow industry best practices to keep your call data secure and confidential.</p>
-                </div>
-            </div>
-        </div>
-    </main>
+  <!-- Particle Canvas -->
+  <canvas id="hero-particles" class="fixed inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
 
-    <footer class="bg-gray-800 text-white py-6 mt-auto">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
-            <nav class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="hover:underline">Privacy Policy</a>
-                <a href="#" class="hover:underline">Terms of Service</a>
-                <a href="#" class="hover:underline">Contact Us</a>
-            </nav>
+  <!-- Header -->
+  <header class="py-6 relative z-10">
+    <div class="max-w-7xl mx-auto flex items-center px-6">
+      <h1 class="text-2xl md:text-3xl font-bold text-blue-900 mr-4">NeuralDrive</h1>
+
+      <nav class="ml-auto flex space-x-6">
+        <a href="/" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Home</a>
+        <a href="/feature" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Features</a>
+        <a href="/faq" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">FAQ</a>
+        <a href="/pricing" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Pricing</a>
+        <a href="/testimonials" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">About the Developer</a>
+      </nav>
+
+      <a href="/signin"
+        class="btn-bubble ml-6 bg-white text-blue-600 px-4 py-2 rounded shadow font-bold hover:bg-gray-100">
+        Sign In
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow relative z-10">
+    <section class="max-w-7xl mx-auto px-6 py-12 md:py-16">
+      <div class="text-center mb-14">
+        <h2 class="text-4xl md:text-5xl font-bold text-blue-900 mb-4">
+          Powerful Features Built for AI Sales Training
+        </h2>
+        <p class="text-lg md:text-xl text-gray-700 font-medium max-w-3xl mx-auto">
+          Give your reps realistic practice, instant coaching, and a smarter path to consistent performance.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">📞 Realistic AI Sales Simulations</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Train salespeople with ultra-realistic, voice-based outbound call simulations that mimic real dealership sales scenarios.
+          </p>
         </div>
-    </footer>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">🔁 Scenario Customization</h4>
+          <p class="text-gray-700 leading-relaxed">
+            We can build and tweak AI customer personas and scenarios to fit any sales process, product line, or dealership campaign.
+          </p>
+        </div>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">📊 Automatic Sales Rep Evaluation</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Each call is analyzed instantly with AI-driven feedback, giving reps detailed scores and coaching on objection handling, tone, product knowledge, and more.
+          </p>
+        </div>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">📈 Performance Analytics Dashboard</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Managers get full visibility into rep performance with real-time dashboards, historical comparisons, and exportable reports.
+            <span class="block mt-2 text-sm font-semibold text-blue-600">(Currently in the works)</span>
+          </p>
+        </div>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">🧠 AI Objection Library</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Continuously expanding database of real-world objections like “I need to talk to my wife first” that AI customers can throw at sales reps, ensuring reps are prepared for common and difficult objections.
+          </p>
+        </div>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">🕒 Call Scheduling & Reminders</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Allow reps to schedule practice calls and receive reminders, creating consistent daily training habits without manual oversight.
+            <span class="block mt-2 text-sm font-semibold text-blue-600">(Currently in the works)</span>
+          </p>
+        </div>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">🎯 Personalized Training Plans</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Automatically generate improvement plans based on a rep’s performance history, such as focusing on price objections or improving call openers.
+            <span class="block mt-2 text-sm font-semibold text-blue-600">(Currently in the works)</span>
+          </p>
+        </div>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">🎥 Post-Call Replay & Annotations</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Reps and managers can review recordings with AI-generated annotations showing key moments, missed opportunities, and strengths.
+            <span class="block mt-2 text-sm font-semibold text-blue-600">(Currently in the works)</span>
+          </p>
+        </div>
+
+        <div class="feature-card p-6">
+          <h4 class="text-xl font-bold mb-3">🔄 Multi-Scenario Rotation</h4>
+          <p class="text-gray-700 leading-relaxed">
+            Rotate between different call scenarios like lease vs. finance, first-time buyers, trade-in discussions, and cold leads so reps don’t get too comfortable with one script.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-6 mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto text-center px-4">
+      <p class="text-blue-900 font-medium">&copy; 2026 NeuralDrive. All Rights Reserved.</p>
+      <nav class="flex justify-center space-x-6 mt-4 text-sm">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Contact Us</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Particle Configuration -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        await tsParticles.load("hero-particles", {
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "repulse" },
+              onClick: { enable: true, mode: "push" },
+              resize: true
+            },
+            modes: {
+              repulse: { distance: 100, duration: 0.4 },
+              push: { quantity: 4 }
+            }
+          },
+          particles: {
+            color: { value: "#3b82f6" },
+            links: {
+              enable: true,
+              color: "#3b82f6",
+              distance: 130,
+              opacity: 0.4
+            },
+            move: { enable: true, speed: 1 },
+            number: { value: 45 },
+            opacity: { value: 0.5 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 4 } }
+          },
+          detectRetina: true
+        });
+      } catch (error) {
+        console.error("Particle load error:", error);
+      }
+    });
+  </script>
+
 </body>
-
 </html>

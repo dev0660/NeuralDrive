@@ -1,63 +1,261 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testimonials - Automated AI</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About the Developer - NeuralDrive</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+    <style>
+        .nav-link,
+        .footer-link {
+            position: relative;
+            color: #1e3a8a;
+            text-decoration: none;
+            transition: .25s;
+        }
+
+        .nav-link::after,
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 100%;
+            height: 2px;
+            background: #2563eb;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: .25s;
+        }
+
+        .nav-link:hover::after,
+        .footer-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .btn-bubble {
+            transition: .25s;
+        }
+
+        .btn-bubble:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.08);
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
-    <header class="bg-blue-500 text-white py-6 relative">
-        <div class="container mx-auto flex items-center">
-            <h1 class="text-2xl font-bold">Jarvis AI</h1>
-            <nav class="ml-auto flex space-x-8 pr-24">
-                <a href="/" class="hover:underline">Home</a>
-                <a href="/feature" class="hover:underline">Features</a>
-                <a href="/faq" class="hover:underline">FAQ</a>
-                <a href="/pricing" class="hover:underline">Pricing</a>
+<body
+    class="bg-gradient-to-br from-blue-100 via-white to-blue-300 flex flex-col min-h-screen relative overflow-x-hidden text-blue-900">
+
+    <canvas id="hero-particles" class="fixed inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
+
+    <header class="py-6 relative z-10">
+        <div class="max-w-7xl mx-auto flex items-center px-6">
+
+            <h1 class="text-2xl md:text-3xl font-bold">NeuralDrive</h1>
+
+            <nav class="ml-auto flex space-x-6">
+                <a href="/" class="nav-link px-4 py-2 rounded-full">Home</a>
+                <a href="/feature" class="nav-link px-4 py-2 rounded-full">Features</a>
+                <a href="/faq" class="nav-link px-4 py-2 rounded-full">FAQ</a>
+                <a href="/pricing" class="nav-link px-4 py-2 rounded-full">Pricing</a>
+                <a href="/testimonials" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">About the
+                    Developer</a>
             </nav>
-            <div
-                class="ml-auto bg-white text-blue-500 px-4 py-2 rounded shadow hover:bg-gray-100 absolute top-4 right-4">
-                <a href="/signin" class="font-bold">Sign In</a>
-            </div>
+
+            <a href="/signin"
+                class="btn-bubble ml-6 bg-white text-blue-600 px-4 py-2 rounded shadow font-bold hover:bg-gray-100">
+                Sign In
+            </a>
+
         </div>
     </header>
 
-    <main class="flex-grow bg-white py-10">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-6">What Our Clients Say</h2>
-            <div class="space-y-6">
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <p class="text-lg italic">"Automated AI has transformed how our business operates. Their custom
-                        solutions saved us countless hours and boosted our efficiency immensely."</p>
-                    <p class="mt-4 font-bold">- Sarah Johnson, CEO of TechWorld</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <p class="text-lg italic">"The integration process was seamless, and the results were even better
-                        than expected. Automated AI's team is simply amazing!"</p>
-                    <p class="mt-4 font-bold">- David Lee, Operations Manager at EcomNext</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <p class="text-lg italic">"Our analytics and decision-making improved drastically thanks to
-                        Automated AI's advanced tools. Highly recommended!"</p>
-                    <p class="mt-4 font-bold">- Rachel Adams, Head of Analytics at MarketPro</p>
-                </div>
+    <main class="flex-grow relative z-10">
+
+        <section class="max-w-5xl mx-auto px-6 py-14">
+
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    About the Developer
+                </h2>
+
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                    The story behind NeuralDrive and why it was built.
+                </p>
             </div>
-        </div>
+
+            <div class="glass-card p-8 space-y-6 text-gray-700 leading-relaxed">
+
+                <div class="text-center mb-2">
+                    <h3 class="text-2xl md:text-3xl font-bold text-blue-900 mb-2">Devin Pattison</h3>
+                    <p class="text-gray-600 mb-4">Developer of NeuralDrive</p>
+
+                    <a href="https://www.linkedin.com/in/devin-pattison-92968022b" target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-bubble inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.02-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.37h.04c.4-.76 1.38-1.56 2.85-1.56 3.05 0 3.62 2.01 3.62 4.62v5.57z" />
+                        </svg>
+                        Connect on LinkedIn
+                    </a>
+                </div>
+
+                <p>
+                    My name is <strong>Devin Pattison</strong>. I’m a software engineer with a background in computer
+                    science, mathematics, and data systems. The reason I built this platform didn’t start as a startup
+                    idea — it started from real work I was doing with businesses that needed automation.
+                </p>
+
+                <p>
+                    A few years ago in <strong>West Palm Beach</strong>, I started building automated workflows for
+                    professional service companies. Law firms, service providers, and other businesses needed ways to
+                    automate repetitive processes like lead intake, follow-ups, scheduling, and CRM management. Using
+                    tools like API workflows, automation platforms, and backend systems, I helped companies eliminate
+                    hours of manual work and improve how they handled incoming leads.
+                </p>
+
+                <p>
+                    That experience showed me something important: automation can dramatically improve operations, but
+                    there are certain industries where you <strong>cannot simply replace people with AI</strong>. One of
+                    the clearest examples of that was sales.
+                </p>
+
+                <p>
+                    Sales — especially in industries like automotive — depends heavily on human connection. Confidence,
+                    tone, energy, personality, and timing matter. Customers don’t want to talk to robots when they’re
+                    making a large purchase like a vehicle. So the question became: <strong>how can AI improve sales
+                        performance without replacing the human element?</strong>
+                </p>
+
+                <p>
+                    That question led to the idea behind this platform.
+                </p>
+
+                <p>
+                    Instead of trying to replace salespeople, the idea was to use AI to <strong>train them</strong>.
+                </p>
+
+                <p>
+                    I began developing this application while working with a dealership organization. I had the
+                    opportunity to work alongside the <strong>second largest Toyota dealership in the United
+                        States</strong>, which gave me real exposure to how high-performing sales teams actually
+                    operate. Watching their team interact with customers, handle objections, and manage follow-up
+                    conversations gave me a much deeper understanding of the challenges sales managers face when trying
+                    to train new reps.
+                </p>
+
+                <p>
+                    One of the biggest problems was repetition. The best salespeople had thousands of conversations
+                    worth of experience, while newer reps simply hadn't had enough real interactions yet. Managers can
+                    roleplay with reps occasionally, but they rarely have time to run dozens of practice conversations
+                    every week.
+                </p>
+
+                <p>
+                    So I built a system where reps could practice those conversations with an AI voice agent that
+                    behaves like a real customer.
+                </p>
+
+                <p>
+                    The results were fascinating.
+                </p>
+
+                <p>
+                    When sales reps began using the system, the experienced salespeople consistently scored higher —
+                    exactly what you would expect. But something interesting happened with the newer reps. As they kept
+                    practicing conversations, their scores began improving. You could literally see their confidence
+                    growing.
+                </p>
+
+                <p>
+                    What surprised me the most was how the reps reacted to the system.
+                </p>
+
+                <p>
+                    It almost felt like a game to them.
+                </p>
+
+                <p>
+                    They wanted to run another scenario. Then another one. They compared scores with each other. Some of
+                    them tried to beat their previous performance like it was a leaderboard.
+                </p>
+
+                <p>
+                    You could see their faces light up when they handled a tough objection correctly or improved their
+                    score. That was the moment I realized this idea had real potential — not just as a tool, but as a
+                    new way to make training engaging.
+                </p>
+
+                <p>
+                    NeuralDrive was built around a simple philosophy: <strong>use AI to help salespeople become better
+                        humans at selling</strong>.
+                </p>
+
+                <p>
+                    The goal isn’t to remove personality, spirit, or human connection from sales. The goal is to give
+                    people the experience, repetition, and feedback they need to develop those skills faster.
+                </p>
+
+                <p>
+                    This platform is the result of that idea.
+                </p>
+
+            </div>
+
+        </section>
+
     </main>
 
-    <footer class="bg-gray-800 text-white py-6 mt-auto">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
-            <nav class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="hover:underline">Privacy Policy</a>
-                <a href="#" class="hover:underline">Terms of Service</a>
-                <a href="#" class="hover:underline">Contact Us</a>
+    <footer class="py-6 mt-auto relative z-10">
+        <div class="max-w-7xl mx-auto text-center px-4">
+
+            <p class="text-blue-900 font-medium">
+                &copy; 2025 NeuralDrive. All Rights Reserved.
+            </p>
+
+            <nav class="flex justify-center space-x-6 mt-4 text-sm">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact</a>
             </nav>
+
         </div>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            await tsParticles.load("hero-particles", {
+                fullScreen: { enable: false },
+                background: { color: { value: "transparent" } },
+                particles: {
+                    color: { value: "#3b82f6" },
+                    links: { enable: true, color: "#3b82f6", distance: 130, opacity: 0.4 },
+                    move: { enable: true, speed: 1 },
+                    number: { value: 45 },
+                    opacity: { value: 0.5 },
+                    shape: { type: "circle" },
+                    size: { value: { min: 1, max: 4 } }
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

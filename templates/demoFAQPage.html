@@ -1,99 +1,373 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - Automated AI</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggles = document.querySelectorAll('.faq-toggle');
-            toggles.forEach(toggle => {
-                toggle.addEventListener('click', function () {
-                    const answer = this.nextElementSibling;
-                    if (answer.style.maxHeight) {
-                        answer.style.maxHeight = null;
-                    } else {
-                        answer.style.maxHeight = answer.scrollHeight + 'px';
-                    }
-                });
-            });
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ - Automated AI</title>
+
+  <!-- Tailwind + tsParticles -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+  <style>
+    .nav-link,
+    .footer-link {
+      position: relative;
+      color: #1e3a8a;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link::after,
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 2px;
+      background: #2563eb;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus::after,
+    .footer-link:hover::after,
+    .footer-link:focus::after {
+      transform: scaleX(1);
+    }
+
+    .btn-bubble {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-bubble:hover,
+    .btn-bubble:focus {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+    }
+
+    .faq-card {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .faq-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(37, 99, 235, 0.12);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .faq-toggle svg {
+      transition: transform 0.25s ease;
+    }
+
+    .faq-toggle.active svg {
+      transform: rotate(180deg);
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggles = document.querySelectorAll(".faq-toggle");
+
+      toggles.forEach(toggle => {
+        toggle.addEventListener("click", function () {
+          const answer = this.nextElementSibling;
+          const isOpen = this.classList.contains("active");
+
+          toggles.forEach(otherToggle => {
+            otherToggle.classList.remove("active");
+            const otherAnswer = otherToggle.nextElementSibling;
+            otherAnswer.style.maxHeight = null;
+          });
+
+          if (!isOpen) {
+            this.classList.add("active");
+            answer.style.maxHeight = answer.scrollHeight + "px";
+          }
         });
-    </script>
-    <style>
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-    </style>
+      });
+    });
+  </script>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
-    <header class="bg-blue-500 text-white py-6 relative">
-        <div class="container mx-auto flex items-center">
-            <h1 class="text-2xl font-bold">Jarvis AI</h1>
-            <nav class="ml-auto flex space-x-8 pr-24">
-                <a href="/" class="hover:underline">Home</a>
-                <a href="/feature" class="hover:underline">Features</a>
-                <a href="/pricing" class="hover:underline">Pricing</a>
-                <a href="/testimonials" class="hover:underline">Testimonials</a>
-            </nav>
-            <div
-                class="ml-auto bg-white text-blue-500 px-4 py-2 rounded shadow hover:bg-gray-100 absolute top-4 right-4">
-                <a href="/signin" class="font-bold">Sign In</a>
-            </div>
-        </div>
-    </header>
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-300 flex flex-col min-h-screen relative overflow-x-hidden text-blue-900">
 
-    <main class="flex-grow bg-white py-10">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-6">Frequently Asked Questions</h2>
-            <div class="space-y-4">
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <button class="faq-toggle font-bold mb-2">What is Automated AI?</button>
-                    <div class="faq-answer">
-                        <p>Automated AI provides tailored AI solutions to help businesses automate processes and improve
-                            efficiency.</p>
-                    </div>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <button class="faq-toggle font-bold mb-2">How secure is Automated AI?</button>
-                    <div class="faq-answer">
-                        <p>We prioritize security with robust encryption and data protection measures to keep your
-                            information safe.</p>
-                    </div>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <button class="faq-toggle font-bold mb-2">Can I integrate Automated AI with my existing
-                        systems?</button>
-                    <div class="faq-answer">
-                        <p>Yes, Automated AI offers seamless integration through APIs and support for popular platforms.
-                        </p>
-                    </div>
-                </div>
-                <div class="bg-gray-100 p-6 rounded shadow">
-                    <button class="faq-toggle font-bold mb-2">What industries benefit from Automated AI?</button>
-                    <div class="faq-answer">
-                        <p>Our solutions cater to a wide range of industries, including healthcare, finance, e-commerce,
-                            and more.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+  <!-- Particle Canvas -->
+  <canvas id="hero-particles" class="fixed inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
 
-    <footer class="bg-gray-800 text-white py-6 mt-auto">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2025 Automated AI. All Rights Reserved.</p>
-            <nav class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="hover:underline">Privacy Policy</a>
-                <a href="#" class="hover:underline">Terms of Service</a>
-                <a href="#" class="hover:underline">Contact Us</a>
-            </nav>
+  <!-- Header -->
+  <header class="py-6 relative z-10">
+    <div class="max-w-7xl mx-auto flex items-center px-6">
+      <h1 class="text-2xl md:text-3xl font-bold text-blue-900 mr-4">NeuralDrive</h1>
+
+      <nav class="ml-auto flex space-x-6">
+        <a href="/" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Home</a>
+        <a href="/feature" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Features</a>
+        <a href="/faq" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">FAQ</a>
+        <a href="/pricing" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Pricing</a>
+        <a href="/testimonials" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">About the Developer</a>
+      </nav>
+
+      <a href="/signin"
+        class="btn-bubble ml-6 bg-white text-blue-600 px-4 py-2 rounded shadow font-bold hover:bg-gray-100">
+        Sign In
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow relative z-10">
+    <section class="max-w-5xl mx-auto px-6 py-12 md:py-16">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-bold text-blue-900 mb-4">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-lg md:text-xl text-gray-700 font-medium max-w-3xl mx-auto">
+          Everything you need to know about how NeuralDrive helps dealerships train reps with realistic AI voice simulations, feedback, and repeatable coaching at scale.
+        </p>
+      </div>
+
+      <div class="space-y-5">
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>What is NeuralDrive?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              NeuralDrive is an AI-powered voice training platform designed to help dealership sales teams practice realistic customer conversations without risking real leads. Reps can take simulated calls, respond to objections, improve their pitch, and receive instant performance feedback. The goal is to create a repeatable training environment that helps salespeople build confidence, sharpen communication, and improve consistency before they ever get on a live customer call.
+            </p>
+          </div>
         </div>
-    </footer>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>How does the AI sales training actually work?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              A rep interacts with an AI voice agent that acts like a real prospect or customer. The AI can simulate common dealership scenarios such as inbound leads, outbound follow-up, objection handling, financing questions, trade-in discussions, or hesitant buyers. After the conversation, the system evaluates the rep’s performance across areas like tone, confidence, responsiveness, objection handling, and overall sales execution. This gives reps immediate coaching without requiring a manager to manually roleplay every session.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Who is this built for?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+               NeuralDrive is built primarily for dealerships, sales managers, internet sales teams, BDC reps, and other organizations that rely on phone-based selling or follow-up. It is especially useful for onboarding new reps, standardizing training across teams, and helping experienced reps refine weak areas without needing constant manager intervention.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>What kinds of sales scenarios can be simulated?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              The platform can support a wide range of training situations, including cold outbound calls, lead follow-up, missed appointment recovery, trade-in conversations, financing concerns, pricing objections, hesitant buyers, first-time buyers, and appointment-setting. Scenarios can also be tailored to fit specific dealership workflows, offers, or customer personas so training feels relevant to the team using it.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Does the platform score or evaluate each rep?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              Yes. One of the core benefits is automated rep evaluation. After each simulated call, the system can generate structured feedback showing where the rep performed well and where they need improvement. Depending on the implementation, this can include observations around communication quality, call structure, objection handling, confidence, urgency, listening ability, and adherence to the intended sales process.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Can managers track progress over time?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              That is a major part of the vision for the platform. Managers can use performance history, scoring trends, and training activity to understand where individual reps or teams are improving and where they need more coaching. This makes training more measurable and less subjective. Instead of relying on occasional observation, managers can use actual call performance data to guide coaching conversations.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Can this be customized for a specific dealership or sales process?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              Yes. The platform is designed to be adaptable. Customer personas, objection types, scripts, training goals, and even certain dealership-specific workflows can be adjusted so the AI reflects the real conversations your team deals with. That means the system can be used as more than a generic roleplay tool. It can become a training environment shaped around your actual selling process.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Is this replacing sales managers or human coaching?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              No. The point is to support and scale coaching, not replace it. NeuralDrive gives reps more repetitions, more practice opportunities, and faster feedback between manager-led coaching sessions. Managers still play a critical role in setting expectations, reviewing results, and helping reps improve. The AI simply removes a lot of the manual bottleneck involved in constant live roleplay and review.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Is this only for automotive dealerships?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              The current focus is dealership sales training, because that is where the platform’s workflows and scenarios are most directly aligned. But the broader model can also apply to other industries that depend on phone-based sales, lead follow-up, appointment setting, or objection handling. The strongest fit today is automotive and dealership-related sales environments.
+            </p>
+          </div>
+        </div>
+
+        <!--
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>How is call data handled?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              Data handling should follow strong security and privacy practices, including secure infrastructure, access controls, and careful treatment of recordings, transcripts, and performance analytics. The exact implementation can vary by deployment, but the goal is to keep training data protected and accessible only to the right users. If you plan to sell into larger organizations, this is one of the first questions buyers will ask, so keeping your policy language clear here is important.
+            </p>
+          </div>
+        </div>
+        -->
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Do reps need special hardware or software to use it?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              In most cases, no special hardware is needed beyond a standard device and a working audio setup or phone workflow, depending on how the experience is delivered. The goal is to make training simple enough that reps can practice consistently without technical friction.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-card p-6">
+          <button class="faq-toggle w-full flex items-center justify-between text-left font-bold text-lg text-blue-900">
+            <span>Why would a recruiter, investor, or buyer care about this product?</span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pt-4 text-gray-700 leading-relaxed">
+              Because it solves a real operational problem. Sales teams need more practice, managers do not have unlimited time, and poor lead handling costs money. A platform like this turns sales training into something more scalable, measurable, and repeatable.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-6 mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto text-center px-4">
+      <p class="text-blue-900 font-medium">&copy; 2026 NeuralDrive. All Rights Reserved.</p>
+      <nav class="flex justify-center space-x-6 mt-4 text-sm">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Contact Us</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Particle Configuration -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        await tsParticles.load("hero-particles", {
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "repulse" },
+              onClick: { enable: true, mode: "push" },
+              resize: true
+            },
+            modes: {
+              repulse: { distance: 100, duration: 0.4 },
+              push: { quantity: 4 }
+            }
+          },
+          particles: {
+            color: { value: "#3b82f6" },
+            links: {
+              enable: true,
+              color: "#3b82f6",
+              distance: 130,
+              opacity: 0.4
+            },
+            move: { enable: true, speed: 1 },
+            number: { value: 45 },
+            opacity: { value: 0.5 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 4 } }
+          },
+          detectRetina: true
+        });
+      } catch (error) {
+        console.error("Particle load error:", error);
+      }
+    });
+  </script>
+
 </body>
-
 </html>

@@ -28,6 +28,8 @@ def feature(request):
 def faq(request):
     return render(request, "demoFAQPage.html")
 
+def pricing(request):
+    return render(request, "demoPricingPage.html")
 
 def testimonials(request):
     return render(request, "demoTestimonialsPage.html")

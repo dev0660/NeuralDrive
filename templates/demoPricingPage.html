@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing - NeuralDrive</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+  <style>
+    .nav-link,
+    .footer-link {
+      position: relative;
+      color: #1e3a8a;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link::after,
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 2px;
+      background: #2563eb;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus::after,
+    .footer-link:hover::after,
+    .footer-link:focus::after {
+      transform: scaleX(1);
+    }
+
+    .btn-bubble {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-bubble:hover,
+    .btn-bubble:focus {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.08);
+    }
+
+    .pricing-highlight {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.10), rgba(255, 255, 255, 0.75));
+      border: 1px solid rgba(37, 99, 235, 0.18);
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-300 flex flex-col min-h-screen relative overflow-x-hidden text-blue-900">
+
+  <!-- Particle Canvas -->
+  <canvas id="hero-particles" class="fixed inset-0 -z-10 w-full h-full pointer-events-none"></canvas>
+
+  <!-- Header -->
+  <header class="py-6 relative z-10">
+    <div class="max-w-7xl mx-auto flex items-center px-6">
+      <h1 class="text-2xl md:text-3xl font-bold text-blue-900 mr-4">NeuralDrive</h1>
+
+      <nav class="ml-auto flex space-x-6">
+        <a href="/" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Home</a>
+        <a href="/feature" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Features</a>
+        <a href="/faq" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">FAQ</a>
+        <a href="/pricing" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">Pricing</a>
+        <a href="/testimonials" class="nav-link px-4 py-2 rounded-full hover:bg-white/10">About the Developer</a>
+      </nav>
+
+      <a href="/signin"
+        class="btn-bubble ml-6 bg-white text-blue-600 px-4 py-2 rounded shadow font-bold hover:bg-gray-100">
+        Sign In
+      </a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-grow relative z-10">
+    <section class="max-w-6xl mx-auto px-6 py-14">
+      <div class="text-center mb-12">
+        <p class="text-sm uppercase tracking-widest text-blue-600 font-bold mb-3">
+          Pricing Built Around Performance
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-5">
+          Train your reps every day without burning manager time or real leads
+        </h2>
+        <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+          NeuralDrive is priced around one thing: helping your team get more high-quality reps in, improve faster, and perform better when real customers are on the line.
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <div class="glass-card pricing-highlight p-8 md:p-10 text-center">
+          <p class="text-sm uppercase tracking-widest text-blue-600 font-bold mb-3">
+            Typical Monthly Investment
+          </p>
+
+          <h3 class="text-5xl md:text-6xl font-bold text-blue-900 mb-4">
+            $100–$150
+          </h3>
+
+          <p class="text-xl text-gray-700 font-medium mb-3">
+            per rep / month
+          </p>
+
+          <p class="text-gray-700 leading-relaxed max-w-2xl mx-auto mb-8 text-lg">
+            For most teams, that supports roughly <strong>15–30 minutes of daily training per user</strong> — enough to build repetition, sharpen objection handling, and help reps improve with consistent practice over time.
+          </p>
+
+          <div class="grid md:grid-cols-3 gap-4 text-left mt-8">
+            <div class="bg-white/65 rounded-xl p-5 border border-white/60">
+              <h4 class="font-bold text-blue-900 mb-2">Daily Skill Building</h4>
+              <p class="text-sm text-gray-700">
+                Give reps a consistent way to practice openers, objections, tone, and call flow instead of waiting for occasional coaching.
+              </p>
+            </div>
+
+            <div class="bg-white/65 rounded-xl p-5 border border-white/60">
+              <h4 class="font-bold text-blue-900 mb-2">Faster Rep Ramp-Up</h4>
+              <p class="text-sm text-gray-700">
+                Newer salespeople can build real conversational experience faster without risking live opportunities.
+              </p>
+            </div>
+
+            <div class="bg-white/65 rounded-xl p-5 border border-white/60">
+              <h4 class="font-bold text-blue-900 mb-2">More Manager Leverage</h4>
+              <p class="text-sm text-gray-700">
+                Managers do not have to personally roleplay every scenario for every rep just to create repetition.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/signup"
+              class="btn-bubble inline-block bg-blue-600 text-white text-lg px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold shadow-md">
+              Start Training
+            </a>
+
+            <a href="/faq"
+              class="btn-bubble inline-block bg-white text-blue-700 text-lg px-8 py-3 rounded-lg hover:bg-gray-100 font-semibold shadow-md">
+              Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-5xl mx-auto mt-12">
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="glass-card p-6">
+            <h4 class="text-xl font-bold mb-3">Dynamic Pricing</h4>
+            <p class="text-gray-700 leading-relaxed">
+              Pricing is flexible based on team size, expected training volume, and how deeply you want to customize the experience for your sales process.
+            </p>
+          </div>
+
+          <div class="glass-card p-6">
+            <h4 class="text-xl font-bold mb-3">Built for Repetition</h4>
+            <p class="text-gray-700 leading-relaxed">
+              The value comes from repeated use. The more often reps train, the more confident, consistent, and prepared they become in real customer conversations.
+            </p>
+          </div>
+
+          <div class="glass-card p-6">
+            <h4 class="text-xl font-bold mb-3">Worth More Than a Seat</h4>
+            <p class="text-gray-700 leading-relaxed">
+              You are not paying for access to generic software. You are investing in a system that helps people improve the skill that drives appointments, conversations, and revenue.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-5xl mx-auto mt-12">
+        <div class="glass-card p-8 md:p-10">
+          <h4 class="text-3xl font-bold mb-5 text-center">Why clients justify the investment</h4>
+          <p class="text-gray-700 leading-relaxed text-center max-w-3xl mx-auto mb-8 text-lg">
+            One missed lead, one weak follow-up, or one poorly handled objection can cost far more than a month of training. NeuralDrive helps your team practice before those moments happen for real.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white/60 rounded-xl p-5 border border-white/60">
+              <h5 class="font-bold text-blue-900 mb-2">Without consistent training</h5>
+              <p class="text-gray-700">
+                Reps improve slowly, managers repeat the same coaching manually, and customer conversations vary too much from person to person.
+              </p>
+            </div>
+
+            <div class="bg-white/60 rounded-xl p-5 border border-white/60">
+              <h5 class="font-bold text-blue-900 mb-2">With NeuralDrive</h5>
+              <p class="text-gray-700">
+                Reps can train daily, build confidence faster, and develop stronger habits before they ever get on a real call with a real customer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-4xl mx-auto mt-12 text-center">
+        <h4 class="text-3xl font-bold mb-4">Ready to make training part of the daily workflow?</h4>
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+          The pricing is dynamic because every team trains differently — but the goal is always the same: better reps, better conversations, and better performance.
+        </p>
+
+        <a href="/signup"
+          class="btn-bubble inline-block bg-blue-600 text-white text-lg px-10 py-3 rounded-lg hover:bg-blue-700 font-semibold shadow-md">
+          Get Started
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-6 mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto text-center px-4">
+      <p class="text-blue-900 font-medium">&copy; 2026 NeuralDrive. All Rights Reserved.</p>
+      <nav class="flex justify-center space-x-6 mt-4 text-sm">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Contact Us</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        await tsParticles.load("hero-particles", {
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "repulse" },
+              onClick: { enable: true, mode: "push" },
+              resize: true
+            },
+            modes: {
+              repulse: { distance: 100, duration: 0.4 },
+              push: { quantity: 4 }
+            }
+          },
+          particles: {
+            color: { value: "#3b82f6" },
+            links: {
+              enable: true,
+              color: "#3b82f6",
+              distance: 130,
+              opacity: 0.4
+            },
+            move: { enable: true, speed: 1 },
+            number: { value: 45 },
+            opacity: { value: 0.5 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 4 } }
+          },
+          detectRetina: true
+        });
+      } catch (error) {
+        console.error("Particle load error:", error);
+      }
+    });
+  </script>
+
+</body>
+</html>
